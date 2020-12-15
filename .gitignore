@@ -1,3 +1,9 @@
+# Project-specific files 
+index.html
+index.pdf
+assets/
+index_files/
+
 # History files
 .Rhistory
 .Rapp.history
