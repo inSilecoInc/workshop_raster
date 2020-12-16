@@ -1,5 +1,5 @@
 ---
-title: "Presentation"
+title: "Raster with R"
 author: "inSileco Team"
 date: "2020/12/15"
 output:
@@ -76,11 +76,11 @@ class: inverse, center, middle
 
 --
 
-3. Learn how to manipulate raster files `r icon::fontawesome("r-project")`
+3. Learn how to manipulate rasters `r icon::fontawesome("r-project")`
 
 --
 
-4. Learn how to m visualize raster with `r icon::fontawesome("r-project")`
+4. Learn how to visualize rasters with `r icon::fontawesome("r-project")`
 
 
 ---
@@ -91,7 +91,7 @@ class: inverse, center, middle
 
 ![:custom_hr]()
 
-## Why use `r icon::fontawesome("r-project")` for rasters?
+## Why use `r icon::fontawesome("r-project")` for rasters? (~15min)
 
 
 
@@ -101,7 +101,7 @@ class: inverse, center, middle
 
 # Raster files 
 
-> A raster files consists of a grid of equally sized cells (or pixels) that all have a values (or a missing value) for one single variable. 
+> Raster files are grids of equally sized cells (or pixels) that all have a value (or a missing value) for one single variable. 
 
 --
 
@@ -109,7 +109,8 @@ class: inverse, center, middle
 
 --
 
-- commonly used to represent continuous phenomenon
+- commonly used to represent continuous phenomenon (e.g. temperature, elevation)
+and images (airborne or satellite imagery)
 
 
 
@@ -118,19 +119,67 @@ class: inverse, center, middle
 
 - Examples of raster file formats: 
 
-  - `geotiff`
-  - `ncdf`
-  - `kml`
+  - **GeoTIFF** (see https://trac.osgeo.org/geotiff)
+  - **NetCDF** (see https://www.unidata.ucar.edu/software/netcdf/)
+  - **KML** (also supports vector objects, see https://www.ogc.org/standards/kml/)
   
 
 
 ---
-# `r icon::fontawesome("r-project")` Packages 
+# About `r icon::fontawesome("r-project")`
+
+> R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. &nbsp;&nbsp; [Wikipedia](https://en.wikipedia.org/wiki/R_(programming_language)
+
+--
+
+.center[![:scale 50%](https://roelverbelen.netlify.app/img/hex-stickers.png)]
 
 
-- [`raster`](https://CRAN.R-project.org/package=raster)
-- [`stars`](https://CRAN.R-project.org/package=stars)
-- [`terra`](https://CRAN.R-project.org/package=terra)
+
+---
+# Coding vs clicking
+
+
+
+<hr>
+
+- Programming / Coding allows one to automate what you frequently do
+
+--
+
+- Make your work reproducible 
+  - for others 
+  - for future you
+
+--
+
+- Increase efficiency: 
+  - 
+  - allows you to spend more time thinking 
+
+
+
+---
+# Why `r icon::fontawesome("r-project")`?
+
+<br>
+
+### 1. The package ecosytem is diverse, actively developed 
+
+--
+
+### 2. Community behind is wide, active...
+
+--
+
+### 3. Community behind is wide, active...
+
+--
+
+### 4. You are using it!
+
+
+
 
 
 
@@ -143,16 +192,135 @@ class: inverse, center, middle
 
 ![:custom_hr]()
 
+## Read and write raster files (45min)
+
+
+---
+# `r icon::fontawesome("r-project")` packages ecosystem for spatial objects
+
+## Classes and Methods 
+
+--
+
+### Vectors (not our main focus)
+
+- [`sp`](https://CRAN.R-project.org/package=sp)
+- [`sf`](https://CRAN.R-project.org/package=sf) `r icon::fontawesome("check")`
+
+--
+
+### Rasters
+
+- [`raster`](https://CRAN.R-project.org/package=raster) `r icon::fontawesome("check")`
+- [`stars`](https://CRAN.R-project.org/package=stars) `r icon::fontawesome("check")`
+- [`terra`](https://CRAN.R-project.org/package=terra) 
+
+
+---
+# Raster packages
+
+### [`raster`](https://CRAN.R-project.org/package=raster) .font90[03/2010 (1.0.0) &nbsp; // &nbsp; 11/2020 (3.3-7)]
+  
+<br>
+
+--
+  
+### [`terra`](https://CRAN.R-project.org/package=terra) .font90[03/2019 (0.5-2) &nbsp; // &nbsp; 11/2020 (0.9-11)]
+  
+> terra is an R package that replaces raster. It has a very similar interface, but it is simpler and much faster. 
+
+<br>
+--
+  
+### [`stars`](https://CRAN.R-project.org/package=stars) .font90[07/2018  (0.1-1) &nbsp; // &nbsp; 07/2020 (0.4-3)]
+  
+> Reading, manipulating, writing and plotting spatiotemporal arrays (raster and vector data cubes) in 'R'. 
+
+Depends on [`sf`](https://CRAN.R-project.org/package=sf), `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 
 
 ---
-# Raster
+# Package [raster](https://CRAN.R-project.org/package=raster)
 
-```{R}
+More details
+
+
+
+---
+# Package [stars](https://CRAN.R-project.org/package=stars): SpatioTemporal ARrayS
+
+## Raster and Vector Datacubes
+
+.center[[![:scale 58%](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube3.png)](https://r-spatial.github.io/stars/index.html)] 
+.right[.font60[see https://r-spatial.github.io/stars/index.html]]
+
+
+
+---
+# Example file 
+
+![Accessed 16/12/2020](img/gebco.png)
+
+https://download.gebco.net/ (-73/-41 62/37) see `data`
+
+
+---
+# read with raster
+
+
+```{R read_raster}
 library(raster)
-writeFormats()
+rar <- raster("data/bathy.tif")  
+class(rar)
 ```
+
+---
+# read with stars
+
+
+```{R read_stars}
+library(stars)
+ras <- read_stars("data/bathy.tif")  
+class(ras)
+```
+
+
+
+---
+# Recap 
+
+
+| operation             | *raster*                | *stars*                |
+|:----------------------|:------------------------|:-----------------------|
+| read                  | `raster()`              | `read_stars()`         |
+| read                  | `raster()`              | `read_stars()`         |
+
+
+
+
+
+
+
+
+---
+# `r icon::fontawesome("terminal")` R as a raster file converter 
+
+```{r, echo = FALSE}
+countdown::countdown(minutes = 5, seconds = 0)
+```
+
+### Convert XXX into XXX 
+
+
+<br>
+
+  
+
+
+
+
+
 
 
 
@@ -163,9 +331,59 @@ writeFormats()
 
 class: inverse, center, middle
 
-# `r icon::fontawesome("cogs")` Manipulate
+# `r icon::fontawesome("cogs")` Manipulate 
 
 ![:custom_hr]()
+
+## Do whatever you need with raster files (~1h30)
+
+
+
+---
+# Common operation 
+
+- change projection 
+- clip/mask 
+- extraction
+- basic calculations (e.g. average per regions, min/max)
+- stack 
+- resample 
+- rasterization/polygonation 
+
+
+---
+# Change projection 
+
+
+
+---
+# Clip 
+
+
+
+
+---
+# Mask 
+
+
+
+---
+# Extraction
+
+
+
+---
+# Recap 
+
+
+| operation             | `raster`                | `stars`                |
+|:----------------------|:------------------------|:-----------------------|
+| reprojection          | projectRaster()         | st_transform()         |
+
+
+
+
+
 
 
 ---
@@ -175,6 +393,31 @@ class: inverse, center, middle
 # `r icon::fontawesome("map")` Visualize
 
 ![:custom_hr]()
+
+## Static visualization (~1h)
+
+
+
+---
+# `r icon::fontawesome("r-project")` packages ecosystem for spatial objects
+
+## Visualization
+
+--
+
+### Static
+
+- [`tmap`](https://CRAN.R-project.org/package=tmap)
+- [`ggmap`](https://CRAN.R-project.org/package=ggmap)
+
+--
+
+### Interactive 
+
+- [`rasterVis`](https://CRAN.R-project.org/package=rasterVis)
+- [`leaflet`](https://CRAN.R-project.org/package=leaflet)
+- [`mapview`](https://CRAN.R-project.org/package=mapview)
+
 
 
 
@@ -188,8 +431,8 @@ class: inverse, center, middle
 4. Do that 
 5. Do that 
 
-```{r, include = FALSE}
-countdown::countdown(minutes = 3, seconds = 0)
+```{r, echo = FALSE}
+countdown::countdown(minutes = 5, seconds = 0)
 ```
 
 
@@ -200,3 +443,4 @@ countdown::countdown(minutes = 3, seconds = 0)
 - [Geocomputation with R](https://geocompr.robinlovelace.net/)
 - [Blog R-spatial](https://www.r-spatial.org/)
 - [Open Geospatial Consortium](https://www.ogc.org/)
+- https://nowosad.github.io/BioGIS_19/workshop/#64

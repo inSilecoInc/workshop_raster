@@ -11,7 +11,7 @@ Imports:
   mapview,
   xaringan,
   raster,
-  terra
+  stars
 Remotes: 
   mitchelloharawild/icon
   gadenbuie/countdown
