@@ -94,6 +94,10 @@ class: inverse, center, middle
 ## Why use `r icon::fontawesome("r-project")` for rasters? (~15min)
 
 
+???
+
+If after the workshop if what follows makes sense and you feel it is kid of true, it would a success. 
+
 
 
 
@@ -101,7 +105,7 @@ class: inverse, center, middle
 
 # Raster files 
 
-> Raster files are grids of equally sized cells (or pixels) that all have a value (or a missing value) for one single variable. 
+> Raster files are grids of equally sized cells (or pixels) that all have a value (or a missing value) 
 
 --
 
@@ -109,8 +113,7 @@ class: inverse, center, middle
 
 --
 
-- commonly used to represent continuous phenomenon (e.g. temperature, elevation)
-and images (airborne or satellite imagery)
+> Commonly used to represent continuous phenomenon (e.g. temperature, elevation) and images (airborne or satellite imagery)
 
 
 
@@ -122,6 +125,7 @@ and images (airborne or satellite imagery)
   - **GeoTIFF** (see https://trac.osgeo.org/geotiff)
   - **NetCDF** (see https://www.unidata.ucar.edu/software/netcdf/)
   - **KML** (also supports vector objects, see https://www.ogc.org/standards/kml/)
+  - **GeoPackage** (also supports vector objects, see https://www.ogc.org/standards/geopackage)
   
 
 
@@ -139,46 +143,65 @@ and images (airborne or satellite imagery)
 ---
 # Coding vs clicking
 
-
-
-<hr>
-
-- Programming / Coding allows one to automate what you frequently do
+### 1. Programming/coding allows to automate what is frequently done!
 
 --
 
-- Make your work reproducible 
-  - for others 
-  - for future you
+### 2. Allow to make an analysis/a report reproducible 
 
 --
 
-- Increase efficiency: 
-  - 
-  - allows you to spend more time thinking 
+  - create data pipeline 
+  - for colleagues and future you
+
+--
+
+### 3. Increase efficiency (spend more time thinking)
 
 
+--
+
+### 4. Empowerment 
+
+
+???
+
+One is not better than the other
 
 ---
 # Why `r icon::fontawesome("r-project")`?
 
 <br>
 
-### 1. The package ecosytem is diverse, actively developed 
+### 1. Freeware + Open source
 
 --
 
-### 2. Community behind is wide, active...
+### 2. Package ecosystem is rich and under active development  
 
 --
 
-### 3. Community behind is wide, active...
+### 3. Community is wide, involved, responsive
 
 --
 
-### 4. You are using it!
+### 4. You are most likely already using it!
+
+--
+
+### 5. Many packages connect `r icon::fontawesome("r-project")` to other software/langage
+
+--
+
+### **`r icon::fontawesome("arrow-right")` Very little cannot be done with `r icon::fontawesome("r-project")`**
 
 
+???
+
+Very few people look at the R source code but many people are now involved in package dev via GH or GL.
+
+R Python Julia, whatever, language itself matters less that these
+If you have time to learn a bit it might sometime makes sense, notably to work with other colleagues.
 
 
 
@@ -193,6 +216,10 @@ class: inverse, center, middle
 ![:custom_hr]()
 
 ## Read and write raster files (45min)
+
+???
+
+Will introduce a bit more package to deal with raster in R
 
 
 ---
@@ -216,6 +243,12 @@ class: inverse, center, middle
 - [`terra`](https://CRAN.R-project.org/package=terra) 
 
 
+???
+
+Not visualisation later 
+
+
+
 ---
 # Raster packages
 
@@ -236,7 +269,8 @@ class: inverse, center, middle
   
 > Reading, manipulating, writing and plotting spatiotemporal arrays (raster and vector data cubes) in 'R'. 
 
-Depends on [`sf`](https://CRAN.R-project.org/package=sf), `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
+Depends on [`sf`](https://CRAN.R-project.org/package=sf).
+Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 
 
@@ -263,6 +297,7 @@ More details
 ![Accessed 16/12/2020](img/gebco.png)
 
 https://download.gebco.net/ (-73/-41 62/37) see `data`
+
 
 
 ---
@@ -310,7 +345,8 @@ class(ras)
 countdown::countdown(minutes = 5, seconds = 0)
 ```
 
-### Convert XXX into XXX 
+### Convert `bathy.tif` into `bathy.gpkg` 
+
 
 
 <br>
