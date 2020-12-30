@@ -48,7 +48,8 @@ knitr::opts_chunk$set(
   width = 120
 )
 mypar <- list(fg = "#37abc8", bg = "transparent", las = 1)
-library(icon)
+# library(icon)
+rfa <- function(...) icon::fontawesome(...)
 ```
 
 ---
@@ -59,7 +60,7 @@ class: inverse, center, middle
 
 ![:custom_hr]()
 
-## .font160[`r icon::fontawesome("map")`  + `r icon::fontawesome("r-project")`]
+## .font160[`r rfa("map")`  + `r rfa("r-project")`]
 
 
 ---
@@ -68,30 +69,30 @@ class: inverse, center, middle
 
 <br>
 
-1. Understand the benefits of manipulating raster files with `r icon::fontawesome("r-project")`
+1. Understand the benefits of manipulating raster files with `r rfa("r-project")`
 
 --
 
-2. Learn how to read and write raster files with `r icon::fontawesome("r-project")`
+2. Learn how to read and write raster files with `r rfa("r-project")`
 
 --
 
-3. Learn how to manipulate rasters `r icon::fontawesome("r-project")`
+3. Learn how to manipulate rasters `r rfa("r-project")`
 
 --
 
-4. Learn how to visualize rasters with `r icon::fontawesome("r-project")`
+4. Learn how to visualize rasters with `r rfa("r-project")`
 
 
 ---
 
 class: inverse, center, middle
 
-# `r icon::fontawesome("info-circle")` Rationalize
+# `r rfa("info-circle")` Rationalize
 
 ![:custom_hr]()
 
-## Why use `r icon::fontawesome("r-project")` for rasters? (~15min)
+## Why use `r rfa("r-project")` for rasters? (~15min)
 
 
 ???
@@ -127,12 +128,18 @@ If after the workshop if what follows makes sense and you feel it is kid of true
   - **KML** (also supports vector objects, see https://www.ogc.org/standards/kml/)
   - **GeoPackage** (also supports vector objects, see https://www.ogc.org/standards/geopackage)
   
+--
+
+- `r icon::fontawesome("info-circle")` More details :
+
+  - https://gisgeography.com/gis-formats/
+  - https://gdal.org/drivers/raster/index.html
 
 
 ---
-# About `r icon::fontawesome("r-project")`
+# About `r rfa("r-project")`
 
-> R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. &nbsp;&nbsp; [Wikipedia](https://en.wikipedia.org/wiki/R_(programming_language)
+> R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. &nbsp;&nbsp; [Wikipedia](https://bit.ly/2WFv1Nu)
 
 --
 
@@ -169,7 +176,7 @@ If after the workshop if what follows makes sense and you feel it is kid of true
 One is not better than the other
 
 ---
-# Why `r icon::fontawesome("r-project")`?
+# Why `r rfa("r-project")`?
 
 <br>
 
@@ -177,7 +184,7 @@ One is not better than the other
 
 --
 
-### 2. Package ecosystem is rich and under active development  
+### 2. **Package ecosystem** is rich and under active development  
 
 --
 
@@ -189,11 +196,11 @@ One is not better than the other
 
 --
 
-### 5. Many packages connect `r icon::fontawesome("r-project")` to other software/langage
+### 5. Many packages connect `r rfa("r-project")` to other software/langage
 
 --
 
-### **`r icon::fontawesome("arrow-right")` Very little cannot be done with `r icon::fontawesome("r-project")`**
+### **`r rfa("arrow-right")` Very little cannot be done with `r rfa("r-project")`**
 
 
 ???
@@ -207,11 +214,23 @@ If you have time to learn a bit it might sometime makes sense, notably to work w
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 class: inverse, center, middle
 
-# `r icon::fontawesome("pen")` Input/Ouput 
+# `r rfa("pen")` Input/Ouput 
 
 ![:custom_hr]()
 
@@ -223,23 +242,23 @@ Will introduce a bit more package to deal with raster in R
 
 
 ---
-# `r icon::fontawesome("r-project")` packages ecosystem for spatial objects
+# `r rfa("r-project")` packages ecosystem for spatial objects
 
 ## Classes and Methods 
 
 --
 
-### Vectors (not our main focus)
+### Vectors 
 
 - [`sp`](https://CRAN.R-project.org/package=sp)
-- [`sf`](https://CRAN.R-project.org/package=sf) `r icon::fontawesome("check")`
+- [`sf`](https://CRAN.R-project.org/package=sf) `r rfa("check")`
 
 --
 
-### Rasters
+### **Rasters** (our main focus)
 
-- [`raster`](https://CRAN.R-project.org/package=raster) `r icon::fontawesome("check")`
-- [`stars`](https://CRAN.R-project.org/package=stars) `r icon::fontawesome("check")`
+- [`raster`](https://CRAN.R-project.org/package=raster) `r rfa("check")`
+- [`stars`](https://CRAN.R-project.org/package=stars) `r rfa("check")`
 - [`terra`](https://CRAN.R-project.org/package=terra) 
 
 
@@ -277,17 +296,67 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 ---
 # Package [raster](https://CRAN.R-project.org/package=raster)
 
-More details
 
+### - Well documented 
+  
+  - see https://rspatial.org/raster/
+  - many blog posts and tutorials (e.g. https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/)
+
+<!-- length(devtools::revdep("raster", dependencies = c("Depends", "
+   Imports"))) -->
+
+--
+
+### - 383 packages depend on or import `raster` 
+
+--
+
+### - Depends on `sp` but also works with `sf`.
 
 
 ---
 # Package [stars](https://CRAN.R-project.org/package=stars): SpatioTemporal ARrayS
 
-## Raster and Vector Datacubes
+### Extent `sf` to Raster and Vector Datacubes
 
-.center[[![:scale 58%](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube3.png)](https://r-spatial.github.io/stars/index.html)] 
-.right[.font60[see https://r-spatial.github.io/stars/index.html]]
+.center[[![:scale 62%](https://raw.githubusercontent.com/r-spatial/stars/master/images/cube3.png)](https://r-spatial.github.io/stars/index.html)] 
+.right[.font80[see https://r-spatial.github.io/stars/index.html]]
+
+
+---
+# Package [stars](https://CRAN.R-project.org/package=stars): SpatioTemporal ARrayS
+
+### - Well documented too
+
+.center[![:scale 92%](img/pkgdown_stars.png)]
+.right[.font80[see https://r-spatial.github.io/stars/index.html]]
+
+--
+
+### - 9 packages depend on [`stars`](https://CRAN.R-project.org/package=stars)
+
+### - So far, less material available online.
+
+
+---
+# Read a raster file 
+
+
+## .center[.font200[ `r rfa("file")` `r rfa("arrow-right")` `r rfa("r-project")`]]
+
+<br>
+
+--
+
+### 1. Files you created 
+
+--
+
+### 2. Files you found on the Internet 
+
+--
+
+### 3. `r rfa("r-project")` packages to download raster files
 
 
 
@@ -296,12 +365,13 @@ More details
 
 ![Accessed 16/12/2020](img/gebco.png)
 
-https://download.gebco.net/ (-73/-41 62/37) see `data`
+https://download.gebco.net/ 
+
 
 
 
 ---
-# read with raster
+# Read with *raster*
 
 
 ```{R read_raster}
@@ -310,9 +380,18 @@ rar <- raster("data/bathy.tif")
 class(rar)
 ```
 
----
-# read with stars
 
+---
+# Read with *raster*
+
+```{R plot_raster, eval = FALSE}
+plot(rar)
+```
+
+
+
+---
+# Read with *stars*
 
 ```{R read_stars}
 library(stars)
@@ -320,38 +399,146 @@ ras <- read_stars("data/bathy.tif")
 class(ras)
 ```
 
+---
+# Read with *stars*
+
+```{R plot_stars, eval = FALSE}
+plot(ras)
+```
+
+---
+
+# So ...
+
+<br>
+
+## - GeoTIFF `r icon::fontawesome("check")`
+
+--
+
+## - Other formats, how do I know?
+
+
+
+---
+# Check read/write capabilities with [raster](https://CRAN.R-project.org/package=raster)
+
+```{R raster_drivers}
+ra_dr <- rgdal::gdalDrivers()
+head(ra_dr)
+ra_dr[which(ra_dr$name == "GTiff"), ]
+```
+
+---
+# Check read/write capabilities with [stars](https://CRAN.R-project.org/package=stars)
+
+
+<!-- https://gdal.org/drivers/raster/index.html -->
+
+
+```{R stars_drivers}
+st_dr <- sf::st_drivers(what = "raster")
+head(st_dr)
+st_dr[which(st_dr$name == "GTiff"), ]
+```
+
+<!-- (-73/-41 62/37) see `data` -->
+
+
+--
+.right[.font80[`r icon::fontawesome("info-circle")` More details https://gdal.org/drivers/raster/index.html]]
+
+
+
+
+---
+# Write raster files
+
+##  .center[.font200[`r rfa("r-project")` `r rfa("arrow-right")` `r rfa("file")`]]
+
+--
+
+### - Share 
+
+--
+
+### - Use another software
+
+--
+
+<br>
+
+### `r icon::fontawesome("exclamation-circle")` Create an `output` directory
+
+```{R create_dir}
+dir.create("output", showWarnings = FALSE)
+```
+
+
+---
+# Write with *raster*
+
+```{R write_raster0}
+ra_dr$name[ra_dr$create]
+```
+
+---
+# Write with *raster*
+
+```{R write_raster1, eval = FALSE}
+writeRaster(rar, filename = "output/rar.gpkg", format = "GPKG", overwrite = TRUE)
+```
+
+
+---
+# Write with *stars*
+
+```{R write_stars0}
+sort(st_dr$name[st_dr$write])
+```
+
+---
+# Write with *stars*
+
+```{R write_stars1, eval = FALSE}
+write_stars(ras, dsn = "output/ras.gpkg", driver = "GPKG")
+```
+
+`r rfa("pencil-alt")` dsn stand for **data source name**.
 
 
 ---
 # Recap 
 
 
-| operation             | *raster*                | *stars*                |
-|:----------------------|:------------------------|:-----------------------|
-| read                  | `raster()`              | `read_stars()`         |
-| read                  | `raster()`              | `read_stars()`         |
-
-
-
-
-
+| Action            | *raster*                 | *stars*               |
+|:------------------|:-------------------------|:----------------------|
+| list drivers      | `rgdal::gdalDrivers()`   | `sf::st_drivers()`    |
+| read files        | `raster()`               | `read_stars()`        |
+| write files       | `rasterWrite()`          | `read_stars()`        |
 
 
 
 ---
-# `r icon::fontawesome("terminal")` R as a raster file converter 
+# `r rfa("terminal")` R as a raster file converter 
 
 ```{r, echo = FALSE}
-countdown::countdown(minutes = 5, seconds = 0)
+countdown::countdown(minutes = 10, seconds = 0)
 ```
+<br>
 
-### Convert `bathy.tif` into `bathy.gpkg` 
+--
 
+### `r rfa("star")` Convert `bathy.tif` into `bathy.grd` 
 
+--
+
+### `r rfa("star")` `r rfa("star")` Create a function `conv_raster()` that handles any conversion supported 
 
 <br>
 
-  
+
+
 
 
 
@@ -367,13 +554,11 @@ countdown::countdown(minutes = 5, seconds = 0)
 
 class: inverse, center, middle
 
-# `r icon::fontawesome("cogs")` Manipulate 
+# `r rfa("cogs")` Manipulate 
 
 ![:custom_hr]()
 
 ## Do whatever you need with raster files (~1h30)
-
-
 
 ---
 # Common operation 
@@ -385,6 +570,62 @@ class: inverse, center, middle
 - stack 
 - resample 
 - rasterization/polygonation 
+
+
+---
+# What do we have? [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R raster_obj}
+class(rar)
+rar
+```
+
+---
+# What do we have ? [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R raster_obj_fun}
+dim(rar)
+ncell(rar)
+projection(rar)
+bbox(rar)
+```
+
+---
+# What do we have? [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R stars_obj}
+class(ras)
+ras
+```
+
+---
+# What do we have? [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R stars_obj_fun1}
+dim(ras)
+ncell(ras)
+st_bbox(ras)
+```
+
+---
+# What do we have? [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R stars_obj_fun2}
+ras_crs <- st_crs(ras)
+ras_crs
+```
+
+---
+# What do we have? [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R stars_obj_fun3}
+ras_crs$proj4string
+ras_crs$epsg
+```
+
+- https://epsg.io/
+- https://epsg.io/4326
+
 
 
 ---
@@ -406,6 +647,7 @@ class: inverse, center, middle
 ---
 # Extraction
 
+<!-- density -->
 
 
 ---
@@ -426,7 +668,7 @@ class: inverse, center, middle
 
 class: inverse, center, middle
 
-# `r icon::fontawesome("map")` Visualize
+# `r rfa("map")` Visualize
 
 ![:custom_hr]()
 
@@ -435,7 +677,7 @@ class: inverse, center, middle
 
 
 ---
-# `r icon::fontawesome("r-project")` packages ecosystem for spatial objects
+# `r rfa("r-project")` packages ecosystem for spatial objects
 
 ## Visualization
 
@@ -474,7 +716,7 @@ countdown::countdown(minutes = 5, seconds = 0)
 
 ---
 
-# Resources `r icon::fontawesome("link")`
+# Resources `r rfa("link")`
 
 - [Geocomputation with R](https://geocompr.robinlovelace.net/)
 - [Blog R-spatial](https://www.r-spatial.org/)

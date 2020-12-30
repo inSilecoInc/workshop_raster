@@ -1,3 +1,13 @@
+pre code {
+  padding: 1em 1em 1em 1.5em !important;
+  width: 100%;
+  /* margin-left: auto;  */
+  /* position: absolute; */
+  /* left: 0; */
+  -webkit-transform: translateX(-1.2em);
+}
+
+
 a {
   color: #37abc8;
 }
@@ -13,17 +23,17 @@ a:hover, a:active {
 
 .remark-slide-content {
     background-color: #FAFAFA;
-    border-top: 80px solid rgb(11, 43, 70);
+    border-top: 80px solid #0a3152;
     font-size: 23px;
     font-weight: 400;
     line-height: 1.5;
     padding: .8em .8em 1.2em .8em;
-    color: rgb(11, 43, 70);
+    color: #0a3152;
   }
   
 
   .inverse {
-    background-color: rgb(11, 43, 70);
+    background-color: #0a3152;
     text-shadow: none;
   }
   
@@ -56,7 +66,7 @@ a:hover, a:active {
   .remark-slide-content > h2, h3, h4 {
     padding-top: -30px;
     padding-bottom: 00px;
-    color: rgb(11, 43, 70);
+    color: #0a3152;
     text-shadow: none;
     font-weight: 400;
     text-align: left;
@@ -66,7 +76,7 @@ a:hover, a:active {
 
   .remark-slide-content > h2, .pull-left > h2, .pull-right > h2 {
     font-size: 35px;
-    color: #11446e;
+    color: #0a3152;
     font-weight: bold;
   }
   
@@ -112,7 +122,7 @@ a:hover, a:active {
 
   .title-slide {
     background-image: url('img/raster_ex.png');
-    background-color: rgb(11, 43, 70);
+    background-color: #0a3152;
     background-size: contain;
     border: 0px;
     background-position: 580px 0;
