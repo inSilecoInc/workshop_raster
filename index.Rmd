@@ -14,6 +14,31 @@ output:
 ---
 
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  dev = "svg",
+  fig.width = 5,
+  fig.height = 4.5,
+  fig.align = 'center',
+  width = 120
+)
+mypar <- list(fg = "#37abc8", bg = "transparent", las = 1)
+par(mypar)
+# library(icon)
+rfa <- function(...) icon::fontawesome(...)
+library(raster)
+rar <- raster("data/bathy.tif")  
+class(rar)
+library(stars)
+ras <- read_stars("data/bathy.tif")  
+class(ras)
+```
+
+
 class: title-slide, middle
 
 
@@ -22,35 +47,21 @@ class: title-slide, middle
 <br><br>
 
 .instructors[
-  .font180[Manipulate raster files with `r icon::fontawesome("r-project")`]
+  .font180[Manipulate raster files with `r rfa("r-project")`]
   <br><br><br>
   .authors140[David Beauchesnes & Kevin Cazelles]
   <br><br>
   `r format(Sys.time(), '%B %d, %Y')`
 ]
 
-<br><br><br><br><br><br>
-
+<br><br><br><br>
 
 <img src="img/logoW.png" width="150px"></img>
 
+.instructors[Content under [`r rfa("creative-commons")` `r rfa("creative-commons-by")`](https://creativecommons.org/licenses/by/4.0/) unless othewise specified]
 
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  comment = "#>>",
-  collapse = TRUE,
-  warning = FALSE,
-  message = FALSE,
-  fig.width = 7,
-  fig.height = 5.25,
-  fig.align = 'center',
-  width = 120
-)
-mypar <- list(fg = "#37abc8", bg = "transparent", las = 1)
-# library(icon)
-rfa <- function(...) icon::fontawesome(...)
-```
+
 
 ---
 
@@ -294,7 +305,7 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 
 ---
-# Package [raster](https://CRAN.R-project.org/package=raster)
+# Package [`raster`](https://CRAN.R-project.org/package=raster)
 
 
 ### - Well documented 
@@ -315,7 +326,7 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 
 ---
-# Package [stars](https://CRAN.R-project.org/package=stars): SpatioTemporal ARrayS
+# Package [`stars`](https://CRAN.R-project.org/package=stars): SpatioTemporal ARrayS
 
 ### Extent `sf` to Raster and Vector Datacubes
 
@@ -324,7 +335,7 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 
 ---
-# Package [stars](https://CRAN.R-project.org/package=stars): SpatioTemporal ARrayS
+# Package [`stars`](https://CRAN.R-project.org/package=stars): SpatioTemporal ARrayS
 
 ### - Well documented too
 
@@ -371,7 +382,7 @@ https://download.gebco.net/
 
 
 ---
-# Read with *raster*
+# Read with [`raster`](https://CRAN.R-project.org/package=raster)
 
 
 ```{R read_raster}
@@ -382,7 +393,7 @@ class(rar)
 
 
 ---
-# Read with *raster*
+# Read with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R plot_raster, eval = FALSE}
 plot(rar)
@@ -391,7 +402,7 @@ plot(rar)
 
 
 ---
-# Read with *stars*
+# Read with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R read_stars}
 library(stars)
@@ -400,7 +411,7 @@ class(ras)
 ```
 
 ---
-# Read with *stars*
+# Read with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R plot_stars, eval = FALSE}
 plot(ras)
@@ -421,7 +432,7 @@ plot(ras)
 
 
 ---
-# Check read/write capabilities with [raster](https://CRAN.R-project.org/package=raster)
+# Check read/write capabilities with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R raster_drivers}
 ra_dr <- rgdal::gdalDrivers()
@@ -430,7 +441,7 @@ ra_dr[which(ra_dr$name == "GTiff"), ]
 ```
 
 ---
-# Check read/write capabilities with [stars](https://CRAN.R-project.org/package=stars)
+# Check read/write capabilities with [`stars`](https://CRAN.R-project.org/package=stars)
 
 
 <!-- https://gdal.org/drivers/raster/index.html -->
@@ -458,11 +469,11 @@ st_dr[which(st_dr$name == "GTiff"), ]
 
 --
 
-### - Share 
+## - Share 
 
 --
 
-### - Use another software
+## - Use another software
 
 --
 
@@ -476,14 +487,14 @@ dir.create("output", showWarnings = FALSE)
 
 
 ---
-# Write with *raster*
+# Write with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R write_raster0}
 ra_dr$name[ra_dr$create]
 ```
 
 ---
-# Write with *raster*
+# Write with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R write_raster1, eval = FALSE}
 writeRaster(rar, filename = "output/rar.gpkg", format = "GPKG", overwrite = TRUE)
@@ -491,14 +502,14 @@ writeRaster(rar, filename = "output/rar.gpkg", format = "GPKG", overwrite = TRUE
 
 
 ---
-# Write with *stars*
+# Write with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R write_stars0}
 sort(st_dr$name[st_dr$write])
 ```
 
 ---
-# Write with *stars*
+# Write with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R write_stars1, eval = FALSE}
 write_stars(ras, dsn = "output/ras.gpkg", driver = "GPKG")
@@ -508,8 +519,9 @@ write_stars(ras, dsn = "output/ras.gpkg", driver = "GPKG")
 
 
 ---
-# Recap 
+# `r icon::fontawesome("flag-checkered")` Recap 
 
+<br><br>
 
 | Action            | *raster*                 | *stars*               |
 |:------------------|:-------------------------|:----------------------|
@@ -564,13 +576,12 @@ class: inverse, center, middle
 # Common operation 
 
 - change projection 
-- clip/mask 
-- extraction
 - basic calculations (e.g. average per regions, min/max)
-- stack 
+- crop/mask 
+- extraction
 - resample 
 - rasterization/polygonation 
-
+- stack 
 
 ---
 # What do we have? [`raster`](https://CRAN.R-project.org/package=raster)
@@ -581,13 +592,14 @@ rar
 ```
 
 ---
-# What do we have ? [`raster`](https://CRAN.R-project.org/package=raster)
+# What do we have? [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R raster_obj_fun}
 dim(rar)
 ncell(rar)
 projection(rar)
 bbox(rar)
+extent(rar)
 ```
 
 ---
@@ -619,9 +631,11 @@ ras_crs
 # What do we have? [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R stars_obj_fun3}
+ras_crs$input
 ras_crs$proj4string
 ras_crs$epsg
 ```
+--
 
 - https://epsg.io/
 - https://epsg.io/4326
@@ -629,37 +643,205 @@ ras_crs$epsg
 
 
 ---
-# Change projection 
+# Basic computations  
+
+### Find cell values with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R bc_rar1}
+class(rar[,])
+rar[1, 1]
+rar[1:10, 11:20]
+mean(rar[,]) # or mean(as.matrix(rar))
+quantile(rar[,])
+```
+
+---
+# Basic cell-based computations  
+
+### Find cell values with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R bc_ras1}
+# extract value
+class(ras[[1]])
+ras[[1]][1, 1]
+ras[[1]][1:10, 11:20]
+```
+
+---
+# Basic cell-based computations  
+
+### Find cell values with [`stars`](https://CRAN.R-project.org/package=stars)
+```{R bc_ras1_2}
+mean(ras[[1]]) 
+quantile(ras[[1]])
+```
+
+
+---
+# `r rfa("terminal")` Mean along latitude and longitude 
+
+```{r, echo = FALSE}
+countdown::countdown(minutes = 15, seconds = 0)
+```
+
+### `r rfa("star")` Compute the mean for `bathy` along the latitude or/and longitude (`bathy.tif`)
+
+
+--
+
+### `r rfa("star")` `r rfa("star")` Create a function `mean_long_lat()` that computes means along longitude and latitude (`r rfa("star")` `r rfa("star")` `r rfa("star")` do it for `stars` AND `raster`).
+
+<br>
+
+
 
 
 
 ---
-# Clip 
+# Change map projection with [`stars`](https://CRAN.R-project.org/package=stars) 
 
+- Reminder 
+
+  - [`r icon::fontawesome("wikipedia-w")` List of map projections](https://en.wikipedia.org/wiki/List_of_map_projections)
+
+--
+
+  - [interactive examples](https://mathigon.org/course/circles/spheres-cones-cylinders#sphere-maps)
+
+--
+
+- Let's use the spherical Mercator 
+  - https://epsg.io/
+  - https://epsg.io/3857
+
+
+---
+# Change map projection [`raster`](https://CRAN.R-project.org/package=raster)
+
+- `raster` uses [Proj](https://proj.org/) strings 
+- https://epsg.io/3857
+
+--
+
+```{R rar_new_crs}
+rar_crs <- CRS("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs")
+```
+
+
+---
+# Change map projection [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R projrar, eval = FALSE}
+rar_m <- projectRaster(rar, crs = rar_crs)
+projection(rar_m)
+# plot(rar_m)
+```
+
+
+---
+# Change map projection [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R projrar2, eval = FALSE}
+ras_m <- st_transform(ras, crs = 3857)
+st_crs(ras_m)
+```
+
+
+--- 
+# Resample 
+
+ras_2 <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras)) 
+
+
+
+---
+# Crop 
+
+```{R crop0, eval = TRUE}
+plot(rar)
+rect(-65, 48, -60, 51)
+```
+
+---
+# Crop with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R crop_rar}
+rar_c <- crop(rar, extent(-65, 48, -60, 51))
+plot(rar_c)
+```
+
+---
+# Crop with [`stars`](https://CRAN.R-project.org/package=raster)
+
+```{R crop_ras}
+ext <- st_bbox(c(xmin = -65, ymin = 48, xmax = -60, ymax = 51), crs = 4326)
+ras_c <- st_crop(ras, ext)
+plot(ras_c)
+```
 
 
 
 ---
 # Mask 
 
+Let's use a shapefile of the Gulf of the St-Lawrence 
+
+- see https://www.marineregions.org/gazetteer.php?p=details&id=4290
+
+```{R stl, eval = FALSE} 
+stl <- sf::st_read("data/st_laurence.geojson")  
+stl
+```
+
+---
+# Mask 
+
+```{R plot_stl, eval = FALSE} 
+plot(sf::st_geometry(stl))
+```
 
 
 ---
-# Extraction
+# Mask with [`raster`](https://CRAN.R-project.org/package=raster)
 
-<!-- density -->
+```{R rar_m, eval = FALSE} 
+rar_m <- mask(ras, stl)
+plot(ras_m)
+```
+
+---
+# Mask with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_m, eval = FALSE} 
+ras_m <- ras[stl]
+plot(ras_m)
+```
+
+
 
 
 ---
-# Recap 
+# Rasterize 
+
+rasterize/st_as_stars
+
+---
+# Polyginiza
 
 
-| operation             | `raster`                | `stars`                |
-|:----------------------|:------------------------|:-----------------------|
-| reprojection          | projectRaster()         | st_transform()         |
+
+---
+# `r icon::fontawesome("flag-checkered")` Recap 
 
 
+| Action              | `raster`              | `stars`                |
+|:--------------------|:----------------------|:-----------------------|
+| Get projection      | `projection()`        | `st_crs()`             |
+| Get bounding box    | `bbox()`              | `st_bbox()`            |
+| reprojection        | `projectRaster()`     | st_transform()         |
 
+
+- `r icon::fontawesome("info-circle")` https://r-spatial.github.io/stars/articles/stars6.html
 
 
 
