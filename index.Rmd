@@ -14,6 +14,7 @@ output:
 ---
 
 
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   comment = "#>",
@@ -36,6 +37,7 @@ class(rar)
 library(stars)
 ras <- read_stars("data/bathy.tif")  
 class(ras)
+stl <- sf::st_read("data/st_laurence.geojson")  
 ```
 
 
@@ -58,7 +60,7 @@ class: title-slide, middle
 
 <img src="img/logoW.png" width="150px"></img>
 
-.instructors[Content under [`r rfa("creative-commons")` `r rfa("creative-commons-by")`](https://creativecommons.org/licenses/by/4.0/) unless othewise specified]
+.instructors[Content under [`r rfa("creative-commons")` `r rfa("creative-commons-by")`](https://creativecommons.org/licenses/by/4.0/)  unless othewise specified]
 
 
 
@@ -272,6 +274,7 @@ Will introduce a bit more package to deal with raster in R
 - [`stars`](https://CRAN.R-project.org/package=stars) `r rfa("check")`
 - [`terra`](https://CRAN.R-project.org/package=terra) 
 
+`r icon::fontawesome("info-circle") `https://keen-swartz-3146c4.netlify.app/raster.html#package-stars
 
 ???
 
@@ -643,9 +646,7 @@ ras_crs$epsg
 
 
 ---
-# Basic computations  
-
-### Find cell values with [`raster`](https://CRAN.R-project.org/package=raster)
+# Basic computations  with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R bc_rar1}
 class(rar[,])
@@ -656,9 +657,18 @@ quantile(rar[,])
 ```
 
 ---
-# Basic cell-based computations  
+# Basic computations with [`raster`](https://CRAN.R-project.org/package=raster)
 
-### Find cell values with [`stars`](https://CRAN.R-project.org/package=stars)
+```{R bc_rar1_2}
+# create a copy 
+rar2 <- rar
+rar2[rar > 0] <- NA 
+plot(rar2)
+```
+
+
+---
+# Basic cell-based computations with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R bc_ras1}
 # extract value
@@ -668,12 +678,22 @@ ras[[1]][1:10, 11:20]
 ```
 
 ---
-# Basic cell-based computations  
+# Basic cell-based computations with [`stars`](https://CRAN.R-project.org/package=stars)
 
-### Find cell values with [`stars`](https://CRAN.R-project.org/package=stars)
 ```{R bc_ras1_2}
 mean(ras[[1]]) 
 quantile(ras[[1]])
+# R> ras[[1]][ras[[1]] < units::as_units(10, "m")] <- 2000             
+```
+
+---
+# Basic cell-based computations with [`stars`](https://CRAN.R-project.org/package=stars)
+  
+```{R bc_rar1_3}
+# create a copy 
+ras2 <- ras
+ras2[[1]][ras[[1]] < units::as_units(0, "m")] <- NA
+plot(ras2)
 ```
 
 
@@ -698,7 +718,7 @@ countdown::countdown(minutes = 15, seconds = 0)
 
 
 ---
-# Change map projection with [`stars`](https://CRAN.R-project.org/package=stars) 
+# Change map projection
 
 - Reminder 
 
@@ -716,7 +736,7 @@ countdown::countdown(minutes = 15, seconds = 0)
 
 
 ---
-# Change map projection [`raster`](https://CRAN.R-project.org/package=raster)
+# Change map projection with [`raster`](https://CRAN.R-project.org/package=raster)
 
 - `raster` uses [Proj](https://proj.org/) strings 
 - https://epsg.io/3857
@@ -729,28 +749,25 @@ rar_crs <- CRS("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0
 
 
 ---
-# Change map projection [`raster`](https://CRAN.R-project.org/package=raster)
+# Change map projection with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R projrar, eval = FALSE}
-rar_m <- projectRaster(rar, crs = rar_crs)
-projection(rar_m)
+rar_t <- projectRaster(rar, crs = rar_crs)
+projection(rar_t)
 # plot(rar_m)
 ```
 
 
 ---
-# Change map projection [`stars`](https://CRAN.R-project.org/package=stars)
+# Change map projection with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R projrar2, eval = FALSE}
-ras_m <- st_transform(ras, crs = 3857)
-st_crs(ras_m)
+ras_t <- st_transform(ras, crs = 3857)
+st_crs(ras_t)
 ```
 
 
---- 
-# Resample 
 
-ras_2 <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras)) 
 
 
 
@@ -788,13 +805,15 @@ Let's use a shapefile of the Gulf of the St-Lawrence
 
 - see https://www.marineregions.org/gazetteer.php?p=details&id=4290
 
-```{R stl, eval = FALSE} 
+```{R stl} 
 stl <- sf::st_read("data/st_laurence.geojson")  
 stl
 ```
 
 ---
 # Mask 
+
+Values outside of a given geometry `r icon::fontawesome("arrow-right")` `NA`
 
 ```{R plot_stl, eval = FALSE} 
 plot(sf::st_geometry(stl))
@@ -805,16 +824,80 @@ plot(sf::st_geometry(stl))
 # Mask with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R rar_m, eval = FALSE} 
-rar_m <- mask(ras, stl)
+rar_m <- mask(rar, stl)
+plot(rar_m)
+```
+
+---
+# Mask with [`raster`](https://CRAN.R-project.org/package=raster)
+
+
+```{R rar_m2, eval = FALSE}
+plot(rar_mi)
+rar_mi <- mask(rar, stl, inverse = TRUE)
+```
+
+---
+# Mask with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_m} 
+ras_m <- ras[stl]
 plot(ras_m)
 ```
 
 ---
 # Mask with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R ras_m, eval = FALSE} 
-ras_m <- ras[stl]
-plot(ras_m)
+```{R ras_m1} 
+stl_i <- sf::st_difference(sf::st_as_sfc(st_bbox(ras)), stl)
+plot(stl_i, col = 2)
+```
+
+
+---
+# Mask with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_m2} 
+ras_mi <- ras[stl_i]
+plot(ras_mi)
+```
+
+
+
+---
+# Exercice 
+
+- Do that 
+- Do that 
+
+
+```{r, echo = FALSE}
+countdown::countdown(minutes = 5, seconds = 0)
+```
+
+
+<!-- PAUSE?? -->
+
+
+---
+# Warping/Resampling
+
+### Work with rasters of different resolution 
+
+---
+# Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)  
+
+```{R rar_warp, eval = FALSE}
+ras_w <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras)) 
+```
+
+<!-- show how to do this with a second object -->
+
+---
+# Warping/Resampling with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R projras, eval = FALSE}
+ras_w <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras)) 
 ```
 
 
@@ -823,25 +906,130 @@ plot(ras_m)
 ---
 # Rasterize 
 
-rasterize/st_as_stars
+### Vectors to rasters 
+
 
 ---
-# Polyginiza
+# Rasterize with [`raster`](https://CRAN.R-project.org/package=raster)
 
+```{R}
+# # create grid forst
+# grd = st_as_stars(st_bbox(ls), nx = 10, ny = 10, xlim = c(0, 1>
+#         values = NA_real_)
+stl_r <- st_rasterize(stl, dy = .1, dx = .1)
+plot(stl_r)
+```
+
+
+
+--- 
+# Rasterize with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R}
+# # create grid forst
+# grd = st_as_stars(st_bbox(ls), nx = 10, ny = 10, xlim = c(0, 1>
+#         values = NA_real_)
+stl_r <- st_rasterize(stl, dy = .1, dx = .1)
+plot(stl_r)
+```
+
+
+<!-- ---
+# Polygonize
+# wont do for now as I don't have a good use case..... 
+ -->
+
+
+
+---
+# Stack 
+
+- Collection of rasters 
+
+- Same extend/ resolution
+
+- Multi-band raster (satellite images)
+
+- Convenient to apply to a set 
+
+
+---
+# Stack with [`raster`](https://CRAN.R-project.org/package=raster)
+
+
+### 2 classes : `RasterBrick` and `RasterStack`
+
+--
+
+> The main difference is that a RasterStack is loose collection of RasterLayer objects that can refer to different files (but must all have the same extent and resolution), whereas a RasterBrick can only point to a single file.
+
+https://rspatial.org/raster/spatial/4-rasterdata.html#rasterstack-and-rasterbrick
+
+--
+
+### We'll focus on `RasterStack`
+
+
+
+---
+# Stack with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R, rar_stc}
+rar_stc <- stack(list(bath_v1 = rar, bath_v2 = rar2))
+class(rar) 
+plot(rar_stc)   
+```
+
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R, ras_stc}
+# c(ras, ras*2, along = "bath_v2")  
+ras_stc <- c(ras, ras*2)  
+# ras_stc <- stack(list(bath_v1 = rar, bath_v2 = rar2))             
+plot(ras_stc)   
+```
 
 
 ---
 # `r icon::fontawesome("flag-checkered")` Recap 
 
 
-| Action              | `raster`              | `stars`                |
-|:--------------------|:----------------------|:-----------------------|
-| Get projection      | `projection()`        | `st_crs()`             |
-| Get bounding box    | `bbox()`              | `st_bbox()`            |
-| reprojection        | `projectRaster()`     | st_transform()         |
+| Action              | `raster`               | `stars`                |
+|:--------------------|:-----------------------|:-----------------------|
+| Get projection      | `projection()`         | `st_crs()`             |
+| Get bounding box    | `bbox()`               | `st_bbox()`            |
+| Change projection   | `projectRaster()`      | `st_transform()`       |
+| Crop                | `crop()`               | `st_crop()`            |
+| Mask                | `mask()`               | `[]<-`                 |
+| Resample            | `projectRaster()`      | `st_warp()`            |
+| Rasterize           | `rasterize()`          | `st_rasterize()`       |
+| Stack               | `stack()` or `brick()` | `c()`       |
 
 
-- `r icon::fontawesome("info-circle")` https://r-spatial.github.io/stars/articles/stars6.html
+`r icon::fontawesome("info-circle")` https://r-spatial.github.io/stars/articles/stars6.html
+
+
+
+
+
+---
+# Exercice + countdown
+
+1. Do that 
+2. Do that 
+3. Do that 
+4. Do that 
+5. Do that 
+
+```{r, echo = FALSE}
+countdown::countdown(minutes = 5, seconds = 0)
+```
+
+
+
+
 
 
 
@@ -901,6 +1089,7 @@ countdown::countdown(minutes = 5, seconds = 0)
 # Resources `r rfa("link")`
 
 - [Geocomputation with R](https://geocompr.robinlovelace.net/)
+- [Spatial Data Science](https://keen-swartz-3146c4.netlify.app/)
 - [Blog R-spatial](https://www.r-spatial.org/)
 - [Open Geospatial Consortium](https://www.ogc.org/)
 - https://nowosad.github.io/BioGIS_19/workshop/#64
