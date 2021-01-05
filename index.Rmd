@@ -21,9 +21,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  dev = "svg",
+  dev = "png",
+  dpi = 108,
   fig.width = 5,
-  fig.height = 4.5,
+  fig.height = 4,
   fig.align = 'center',
   width = 120
 )
@@ -247,7 +248,7 @@ class: inverse, center, middle
 
 ![:custom_hr]()
 
-## Read and write raster files (45min)
+## Read and write raster files (30min)
 
 ???
 
@@ -476,7 +477,7 @@ st_dr[which(st_dr$name == "GTiff"), ]
 
 --
 
-## - Use another software
+## - Use another software (e.g. QGIS)
 
 --
 
@@ -573,7 +574,7 @@ class: inverse, center, middle
 
 ![:custom_hr]()
 
-## Do whatever you need with raster files (~1h30)
+## Do whatever you need with raster files (~1h15)
 
 ---
 # Common operation 
@@ -867,8 +868,8 @@ plot(ras_mi)
 ---
 # Exercice 
 
-- Do that 
-- Do that 
+- `r icon::fontawesome("star")` Compute the mean bathymetry in the Gulf of the St-Lawrence
+- `r icon::fontawesome("star")` `r icon::fontawesome("star")` Compute the elevation in 
 
 
 ```{r, echo = FALSE}
@@ -885,9 +886,27 @@ countdown::countdown(minutes = 5, seconds = 0)
 ### Work with rasters of different resolution 
 
 ---
-# Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)  
+# Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R rar_warp, eval = FALSE}
+# create a raser with the given resolution
+temp_2 <- raster(matrix(0, 21, 21), xmn = -71, xmx = -55, ymn = 43, ymx = 55, crs = projection(rar))
+plot(temp_2)
+```
+
+---
+# Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R rar_warp2, eval = FALSE}
+# resample 
+rar_r <- resample(rar, temp_2)
+plot(rar_r)
+```
+
+---
+# Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R ras_warp, eval = FALSE}
 ras_w <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras)) 
 ```
 
@@ -896,9 +915,11 @@ ras_w <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras))
 ---
 # Warping/Resampling with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R projras, eval = FALSE}
-ras_w <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras)) 
+```{R ras_warp2, eval = FALSE}
+ras_w <- st_warp(ras, st_as_stas(temp_2)) 
 ```
+
+
 
 
 
@@ -946,11 +967,11 @@ plot(stl_r)
 
 - Collection of rasters 
 
-- Same extend/ resolution
+- Same extent/resolution
 
-- Multi-band raster (satellite images)
+- Multi-band rasters (satellite images)
 
-- Convenient to apply to a set 
+- Handle several rasters at once 
 
 
 ---
@@ -975,9 +996,17 @@ https://rspatial.org/raster/spatial/4-rasterdata.html#rasterstack-and-rasterbric
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R, rar_stc}
-rar_stc <- stack(list(bath_v1 = rar, bath_v2 = rar2))
+rar_stc <- stack(list(bath_v1 = rar, bath_v2 = rar*2))
 class(rar) 
-plot(rar_stc)   
+plot(rar_stc)
+```
+
+---
+# Stack with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R, rar_stc2}
+plot(crop(rar_stc, extent(-65, 48, -60, 51))))
+# plot(calc(rar_stc, fun = sum)) 
 ```
 
 
@@ -1005,7 +1034,7 @@ plot(ras_stc)
 | Mask                | `mask()`               | `[]<-`                 |
 | Resample            | `projectRaster()`      | `st_warp()`            |
 | Rasterize           | `rasterize()`          | `st_rasterize()`       |
-| Stack               | `stack()` or `brick()` | `c()`       |
+| Stack               | `stack()` or `brick()` | `c(along=...)`         |
 
 
 `r icon::fontawesome("info-circle")` https://r-spatial.github.io/stars/articles/stars6.html
@@ -1017,11 +1046,7 @@ plot(ras_stc)
 ---
 # Exercice + countdown
 
-1. Do that 
-2. Do that 
-3. Do that 
-4. Do that 
-5. Do that 
+To be added 
 
 ```{r, echo = FALSE}
 countdown::countdown(minutes = 5, seconds = 0)
@@ -1042,21 +1067,20 @@ class: inverse, center, middle
 
 ![:custom_hr]()
 
-## Static visualization (~1h)
+## Static visualization (~45min)
 
 
 
 ---
-# `r rfa("r-project")` packages ecosystem for spatial objects
-
-## Visualization
+# `r rfa("r-project")` packages for raster visualization
 
 --
 
 ### Static
 
-- [`tmap`](https://CRAN.R-project.org/package=tmap)
+- [`tmap`](https://CRAN.R-project.org/package=tmap) `r icon::fontawesome("check")`
 - [`ggmap`](https://CRAN.R-project.org/package=ggmap)
+- [`ggplot2`](https://CRAN.R-project.org/package=ggmap)
 
 --
 
@@ -1067,6 +1091,19 @@ class: inverse, center, middle
 - [`mapview`](https://CRAN.R-project.org/package=mapview)
 
 
+
+---
+# base plot 
+
+
+
+--- 
+# ggplot2
+
+
+
+--- 
+# tmap
 
 
 
