@@ -52,7 +52,7 @@ class: title-slide, middle
 .instructors[
   .font180[Manipulate raster files with `r rfa("r-project")`]
   <br><br><br>
-  .authors140[David Beauchesnes & Kevin Cazelles]
+  .authors140[David Beauchesne & Kevin Cazelles]
   <br><br>
   `r format(Sys.time(), '%B %d, %Y')`
 ]
@@ -890,8 +890,9 @@ countdown::countdown(minutes = 5, seconds = 0)
 
 ```{R rar_warp, eval = FALSE}
 # create a raser with the given resolution
-temp_2 <- raster(matrix(0, 21, 21), xmn = -71, xmx = -55, ymn = 43, ymx = 55, crs = projection(rar))
-plot(temp_2)
+mr <- matrix(runif(21*21), 21, 21)
+rar_template1 <- raster(mr, xmn = -71, xmx = -55, ymn = 43, ymx = 55, crs = projection(rar))
+plot(rar_template1)
 ```
 
 ---
@@ -899,15 +900,27 @@ plot(temp_2)
 
 ```{R rar_warp2, eval = FALSE}
 # resample 
-rar_r <- resample(rar, temp_2)
-plot(rar_r)
+rar_w1 <- resample(rar, rar_template1)
+plot(rar_w1)
 ```
 
 ---
 # Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
 
+```{R rar_warp3, eval = FALSE}
+rar_template2 <- raster(xmn = -71, xmx = -55, ymn = 43, ymx = 55, crs = projection(rar), resolution = .25)
+plot(resample(rar, rar_template1))
+```
+
+
+---
+# Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
+
 ```{R ras_warp, eval = FALSE}
-ras_w <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras)) 
+ras_template1 <- st_as_stars(st_bbox(ras), nx = 21, ny = 21, values = runif(21
+   *21))
+ras_w1 <- st_warp(ras, ras_template1)
+plot(ras_w1)
 ```
 
 <!-- show how to do this with a second object -->
@@ -916,10 +929,9 @@ ras_w <- st_warp(ras, cellsize = 0.01, crs = st_crs(ras))
 # Warping/Resampling with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R ras_warp2, eval = FALSE}
-ras_w <- st_warp(ras, st_as_stas(temp_2)) 
+ras_w2 <- st_warp(ras, cellsize = 0.25, crs = st_crs(ras)) 
+plot(st_warp(ras, ras_w2))
 ```
-
-
 
 
 
@@ -933,7 +945,7 @@ ras_w <- st_warp(ras, st_as_stas(temp_2))
 ---
 # Rasterize with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R}
+```{R rasterr1}
 # # create grid forst
 # grd = st_as_stars(st_bbox(ls), nx = 10, ny = 10, xlim = c(0, 1>
 #         values = NA_real_)
@@ -946,7 +958,7 @@ plot(stl_r)
 --- 
 # Rasterize with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R}
+```{R rasters1}
 # # create grid forst
 # grd = st_as_stars(st_bbox(ls), nx = 10, ny = 10, xlim = c(0, 1>
 #         values = NA_real_)
@@ -954,11 +966,6 @@ stl_r <- st_rasterize(stl, dy = .1, dx = .1)
 plot(stl_r)
 ```
 
-
-<!-- ---
-# Polygonize
-# wont do for now as I don't have a good use case..... 
- -->
 
 
 
@@ -1005,8 +1012,8 @@ plot(rar_stc)
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R, rar_stc2}
-plot(crop(rar_stc, extent(-65, 48, -60, 51))))
-# plot(calc(rar_stc, fun = sum)) 
+plot(crop(rar_stc, extent(-65, 48, -60, 51)))
+plot(calc(rar_stc, fun = sum)) 
 ```
 
 
@@ -1014,10 +1021,11 @@ plot(crop(rar_stc, extent(-65, 48, -60, 51))))
 # Stack with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R, ras_stc}
-# c(ras, ras*2, along = "bath_v2")  
-ras_stc <- c(ras, ras*2)  
+ras_stc <- c(ras, ras*2, along = "bath_v2")  
+# ras_stc <- c(ras, ras*2)  
 # ras_stc <- stack(list(bath_v1 = rar, bath_v2 = rar2))             
-plot(ras_stc)   
+plot(ras_stc)
+plot(st_apply(ras_stc, c(1,2), sum))    
 ```
 
 
@@ -1042,11 +1050,10 @@ plot(ras_stc)
 
 
 
-
 ---
 # Exercice + countdown
 
-To be added 
+To be added %
 
 ```{r, echo = FALSE}
 countdown::countdown(minutes = 5, seconds = 0)
