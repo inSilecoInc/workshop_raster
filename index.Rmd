@@ -83,6 +83,10 @@ class: inverse, center, middle
 
 <br>
 
+### Learn how to visualize raster interactively with `r rfa("r-project")`
+
+-- 
+
 1. Understand the benefits of manipulating raster files with `r rfa("r-project")`
 
 --
@@ -120,7 +124,10 @@ If after the workshop if what follows makes sense and you feel it is kid of true
 
 # Raster files 
 
-> Raster files are grids of equally sized cells (or pixels) that all have a value (or a missing value) 
+> Raster files are grids of equally sized (most often) cells (or pixels).
+
+-- 
+> Every cell has a value (or a missing values).
 
 --
 
@@ -128,7 +135,8 @@ If after the workshop if what follows makes sense and you feel it is kid of true
 
 --
 
-> Commonly used to represent continuous phenomenon (e.g. temperature, elevation) and images (airborne or satellite imagery)
+> Commonly used to represent continuous phenomena (e.g. temperature, elevation) and images (airborne or satellite imagery).
+
 
 
 
@@ -182,12 +190,15 @@ If after the workshop if what follows makes sense and you feel it is kid of true
 
 --
 
-### 4. Empowerment 
+### 4. Feeling empowered
+
 
 
 ???
 
 One is not better than the other
+do more, oik but do it in a better way
+
 
 ---
 # Why `r rfa("r-project")`?
@@ -202,15 +213,15 @@ One is not better than the other
 
 --
 
-### 3. Community is wide, involved, responsive
+### 3. Many packages connect `r rfa("r-project")` to other software/language
 
 --
 
-### 4. You are most likely already using it!
+### 4. Community is wide, quite involved, responsive
 
 --
 
-### 5. Many packages connect `r rfa("r-project")` to other software/langage
+### 5. You are most likely already using it! You are not starting from scratch
 
 --
 
@@ -224,6 +235,7 @@ Very few people look at the R source code but many people are now involved in pa
 R Python Julia, whatever, language itself matters less that these
 If you have time to learn a bit it might sometime makes sense, notably to work with other colleagues.
 
+You don't start at 0
 
 
 
@@ -258,6 +270,25 @@ Will introduce a bit more package to deal with raster in R
 ---
 # `r rfa("r-project")` packages ecosystem for spatial objects
 
+--
+
+## Classes and Methods 
+
+--
+
+## Statistical Analyses
+
+--
+
+## Visualisation
+
+--
+
+## Data Retrieval 
+
+---
+# `r rfa("r-project")` packages ecosystem for spatial objects
+
 ## Classes and Methods 
 
 --
@@ -275,7 +306,8 @@ Will introduce a bit more package to deal with raster in R
 - [`stars`](https://CRAN.R-project.org/package=stars) `r rfa("check")`
 - [`terra`](https://CRAN.R-project.org/package=terra) 
 
-`r icon::fontawesome("info-circle") `https://keen-swartz-3146c4.netlify.app/raster.html#package-stars
+`r icon::fontawesome("info-circle")` https://keen-swartz-3146c4.netlify.app/raster.html#package-stars
+`r icon::fontawesome("info-circle")` https://github.com/rspatial (15 packages)
 
 ???
 
@@ -380,8 +412,8 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 ![Accessed 16/12/2020](img/gebco.png)
 
-https://download.gebco.net/ 
-
+- https://download.gebco.net/ 
+- `r icon::fontawesome("link")` [link to the file](2Badded)
 
 
 
@@ -399,7 +431,7 @@ class(rar)
 ---
 # Read with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R plot_raster, eval = FALSE}
+```{R plot_raster}
 plot(rar)
 ```
 
@@ -410,14 +442,14 @@ plot(rar)
 
 ```{R read_stars}
 library(stars)
-ras <- read_stars("data/bathy.tif")  
+ras <- read_stars("data/bathy.tif")   # argument `driver` to specify the driver
 class(ras)
 ```
 
 ---
 # Read with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R plot_stars, eval = FALSE}
+```{R plot_stars}
 plot(ras)
 ```
 
@@ -431,37 +463,57 @@ plot(ras)
 
 --
 
-## - Other formats, how do I know?
+## - Other formats, how do we know?
 
 
 
 ---
 # Check read/write capabilities with [`raster`](https://CRAN.R-project.org/package=raster)
 
+
+`r icon::fontawesome("exclamation-circle")`  [`rgdal`](https://CRAN.R-project.org/package=rgdal) is required
+
 ```{R raster_drivers}
 ra_dr <- rgdal::gdalDrivers()
 head(ra_dr)
+```
+
+--
+
+```{R raster_drivers2}
 ra_dr[which(ra_dr$name == "GTiff"), ]
 ```
 
 ---
 # Check read/write capabilities with [`stars`](https://CRAN.R-project.org/package=stars)
 
+`r icon::fontawesome("exclamation-circle")` [`sf`](https://CRAN.R-project.org/package=rgdal) is required
 
-<!-- https://gdal.org/drivers/raster/index.html -->
 
 
 ```{R stars_drivers}
 st_dr <- sf::st_drivers(what = "raster")
 head(st_dr)
-st_dr[which(st_dr$name == "GTiff"), ]
 ```
 
 <!-- (-73/-41 62/37) see `data` -->
 
+---
+# Check read/write capabilities with [`stars`](https://CRAN.R-project.org/package=stars)
+
+
+```{R stars_drivers2}
+st_dr[which(st_dr$name == "GTiff"), ]
+```
 
 --
-.right[.font80[`r icon::fontawesome("info-circle")` More details https://gdal.org/drivers/raster/index.html]]
+.right[
+
+.font80[`r icon::fontawesome("info-circle")` https://gdal.org/drivers/raster/index.html]
+
+.font80[`r icon::fontawesome("info-circle")` https://keen-swartz-3146c4.netlify.app/intro.html#reading]
+
+]
 
 
 
@@ -473,7 +525,7 @@ st_dr[which(st_dr$name == "GTiff"), ]
 
 --
 
-## - Share 
+## - Share the output file
 
 --
 
@@ -519,7 +571,7 @@ sort(st_dr$name[st_dr$write])
 write_stars(ras, dsn = "output/ras.gpkg", driver = "GPKG")
 ```
 
-`r rfa("pencil-alt")` dsn stand for **data source name**.
+`r rfa("pencil-alt")` dsn stands for **data source name**.
 
 
 ---
@@ -545,11 +597,11 @@ countdown::countdown(minutes = 10, seconds = 0)
 
 --
 
-### `r rfa("star")` Convert `bathy.tif` into `bathy.grd` 
+### `r rfa("star")` Convert `bathy.tif` into `bathy.grd`.
 
 --
 
-### `r rfa("star")` `r rfa("star")` Create a function `conv_raster()` that handles any conversion supported 
+### `r rfa("star")` `r rfa("star")` Create a function `conv_raster()` that handles any conversion supported.
 
 <br>
 
@@ -576,16 +628,26 @@ class: inverse, center, middle
 
 ## Do whatever you need with raster files (~1h15)
 
+
 ---
-# Common operation 
+# Common operations
+
+##  .center[.font200[`r rfa("file")` `r rfa("arrow-right")` `r rfa("r-project")` `r rfa("arrow-right")` `r rfa("file")`]]
+
+
+---
+# Common operations
+
+##  .center[.font200[`r rfa("file")` `r rfa("arrow-right")` `r rfa("r-project")` `r rfa("arrow-right")` `r rfa("cogs")` `r rfa("arrow-right")` `r rfa("file")`]]
+
+--
 
 - change projection 
 - basic calculations (e.g. average per regions, min/max)
 - crop/mask 
 - extraction
 - resample 
-- rasterization/polygonation 
-- stack 
+- etc.
 
 ---
 # What do we have? [`raster`](https://CRAN.R-project.org/package=raster)
@@ -628,6 +690,7 @@ st_bbox(ras)
 
 ```{R stars_obj_fun2}
 ras_crs <- st_crs(ras)
+class(ras_crs)
 ras_crs
 ```
 
@@ -661,9 +724,8 @@ quantile(rar[,])
 # Basic computations with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R bc_rar1_2}
-# create a copy 
-rar2 <- rar
-rar2[rar > 0] <- NA 
+rar2 <- rar # create a copy 
+rar2[rar > 0] <- NA  # filter
 plot(rar2)
 ```
 
@@ -684,16 +746,14 @@ ras[[1]][1:10, 11:20]
 ```{R bc_ras1_2}
 mean(ras[[1]]) 
 quantile(ras[[1]])
-# R> ras[[1]][ras[[1]] < units::as_units(10, "m")] <- 2000             
 ```
 
 ---
 # Basic cell-based computations with [`stars`](https://CRAN.R-project.org/package=stars)
   
 ```{R bc_rar1_3}
-# create a copy 
-ras2 <- ras
-ras2[[1]][ras[[1]] < units::as_units(0, "m")] <- NA
+ras2 <- ras # create a copy
+ras2[[1]][ras[[1]] < units::as_units(0, "m")] <- NA # filter
 plot(ras2)
 ```
 
@@ -727,7 +787,7 @@ countdown::countdown(minutes = 15, seconds = 0)
 
 --
 
-  - [interactive examples](https://mathigon.org/course/circles/spheres-cones-cylinders#sphere-maps)
+  - [Interactive examples](https://mathigon.org/course/circles/spheres-cones-cylinders#sphere-maps)
 
 --
 
@@ -752,17 +812,17 @@ rar_crs <- CRS("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0
 ---
 # Change map projection with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R projrar, eval = FALSE}
+```{R projrar, cache = TRUE}
 rar_t <- projectRaster(rar, crs = rar_crs)
 projection(rar_t)
-# plot(rar_m)
+plot(rar_t)
 ```
 
 
 ---
 # Change map projection with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R projrar2, eval = FALSE}
+```{R projrar2, cache = TRUE}
 ras_t <- st_transform(ras, crs = 3857)
 st_crs(ras_t)
 ```
@@ -771,28 +831,27 @@ st_crs(ras_t)
 
 
 
-
 ---
 # Crop 
 
-```{R crop0, eval = TRUE}
+```{R crop0}
 plot(rar)
-rect(-65, 48, -60, 51)
+rect(-65, 45, -60, 50)
 ```
 
 ---
 # Crop with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R crop_rar}
-rar_c <- crop(rar, extent(-65, 48, -60, 51))
+```{R crop_rar, cache = TRUE}
+rar_c <- crop(rar, extent(-65, -60, 45, 50))
 plot(rar_c)
 ```
 
 ---
 # Crop with [`stars`](https://CRAN.R-project.org/package=raster)
 
-```{R crop_ras}
-ext <- st_bbox(c(xmin = -65, ymin = 48, xmax = -60, ymax = 51), crs = 4326)
+```{R crop_ras, cache = TRUE}
+ext <- st_bbox(c(xmin = -65, xmax = -60, ymin = 45, ymax = 50), crs = 4326)
 ras_c <- st_crop(ras, ext)
 plot(ras_c)
 ```
@@ -804,17 +863,16 @@ plot(ras_c)
 
 Let's use a shapefile of the Gulf of the St-Lawrence 
 
-- see https://www.marineregions.org/gazetteer.php?p=details&id=4290
+`r icon::fontawesome("link")` https://www.marineregions.org/gazetteer.php?p=details&id=4290
 
 ```{R stl} 
-stl <- sf::st_read("data/st_laurence.geojson")  
-stl
+(stl <- sf::st_read("data/st_laurence.geojson"))
 ```
 
 ---
 # Mask 
 
-Values outside of a given geometry `r icon::fontawesome("arrow-right")` `NA`
+Values outside of a given geometry set to `NA`
 
 ```{R plot_stl, eval = FALSE} 
 plot(sf::st_geometry(stl))
@@ -824,7 +882,7 @@ plot(sf::st_geometry(stl))
 ---
 # Mask with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R rar_m, eval = FALSE} 
+```{R rar_m, cache = TRUE} 
 rar_m <- mask(rar, stl)
 plot(rar_m)
 ```
@@ -833,15 +891,15 @@ plot(rar_m)
 # Mask with [`raster`](https://CRAN.R-project.org/package=raster)
 
 
-```{R rar_m2, eval = FALSE}
-plot(rar_mi)
+```{R rar_m2, cache = TRUE}
 rar_mi <- mask(rar, stl, inverse = TRUE)
+plot(rar_mi)
 ```
 
 ---
 # Mask with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R ras_m} 
+```{R ras_m, cache = TRUE} 
 ras_m <- ras[stl]
 plot(ras_m)
 ```
@@ -849,7 +907,7 @@ plot(ras_m)
 ---
 # Mask with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R ras_m1} 
+```{R ras_m1, cache = TRUE} 
 stl_i <- sf::st_difference(sf::st_as_sfc(st_bbox(ras)), stl)
 plot(stl_i, col = 2)
 ```
@@ -858,7 +916,7 @@ plot(stl_i, col = 2)
 ---
 # Mask with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R ras_m2} 
+```{R ras_m2, cache = TRUE} 
 ras_mi <- ras[stl_i]
 plot(ras_mi)
 ```
@@ -868,12 +926,13 @@ plot(ras_mi)
 ---
 # Exercice 
 
-- `r icon::fontawesome("star")` Compute the mean bathymetry in the Gulf of the St-Lawrence
-- `r icon::fontawesome("star")` `r icon::fontawesome("star")` Compute the elevation in 
+- `r icon::fontawesome("star")` Compute the mean depth of the St-Layrence (Gulf and river)
+
+- `r icon::fontawesome("star")` `r icon::fontawesome("star")` Compare the depth of the Gulf of the St-Lawrence and the depth of the St-Lawrence river (various solutions!)
 
 
 ```{r, echo = FALSE}
-countdown::countdown(minutes = 5, seconds = 0)
+countdown::countdown(minutes = 10, seconds = 0)
 ```
 
 
@@ -1002,7 +1061,7 @@ https://rspatial.org/raster/spatial/4-rasterdata.html#rasterstack-and-rasterbric
 ---
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R, rar_stc}
+```{R, rar_stc, cache = TRUE}
 rar_stc <- stack(list(bath_v1 = rar, bath_v2 = rar*2))
 class(rar) 
 plot(rar_stc)
@@ -1020,7 +1079,7 @@ plot(calc(rar_stc, fun = sum))
 ---
 # Stack with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R, ras_stc}
+```{R, ras_stc, cache = TRUE}
 ras_stc <- c(ras, ras*2, along = "bath_v2")  
 # ras_stc <- c(ras, ras*2)  
 # ras_stc <- stack(list(bath_v1 = rar, bath_v2 = rar2))             
@@ -1053,7 +1112,7 @@ plot(st_apply(ras_stc, c(1,2), sum))
 ---
 # Exercice + countdown
 
-To be added %
+To be added 
 
 ```{r, echo = FALSE}
 countdown::countdown(minutes = 5, seconds = 0)
@@ -1086,17 +1145,21 @@ class: inverse, center, middle
 ### Static
 
 - [`tmap`](https://CRAN.R-project.org/package=tmap) `r icon::fontawesome("check")`
+- [`ggplot2`](https://CRAN.R-project.org/package=ggmap) `r icon::fontawesome("check")`
 - [`ggmap`](https://CRAN.R-project.org/package=ggmap)
-- [`ggplot2`](https://CRAN.R-project.org/package=ggmap)
+- [`rasterVis`](https://CRAN.R-project.org/package=rasterVis)
 
 --
 
 ### Interactive 
 
-- [`rasterVis`](https://CRAN.R-project.org/package=rasterVis)
 - [`leaflet`](https://CRAN.R-project.org/package=leaflet)
 - [`mapview`](https://CRAN.R-project.org/package=mapview)
+- [`tmap`](https://CRAN.R-project.org/package=tmap) `r icon::fontawesome("check")`
 
+-- 
+
+See day 2 of the workshop.
 
 
 ---
@@ -1104,8 +1167,8 @@ class: inverse, center, middle
 
 
 
---- 
-# ggplot2
+---
+# ggplot2 
 
 
 

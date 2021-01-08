@@ -7,3 +7,5 @@ In this workshop
  - How to edit raster files
 
 
+# Installation 
+
