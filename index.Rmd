@@ -964,7 +964,7 @@ plot(ras_mi)
 ---
 # Exercice 
 
-- `r icon::fontawesome("star")` Compute the mean depth of the St-Layrence (Gulf and river)
+- `r icon::fontawesome("star")` Compute the mean depth of the St-Lawrence (Gulf and river)
 
 - `r icon::fontawesome("star")` `r icon::fontawesome("star")` Compare the depth of the Gulf of the St-Lawrence and the depth of the St-Lawrence river (various solutions!)
 
@@ -1097,7 +1097,6 @@ plot(stl_s)
 ### We'll focus on `RasterStack`
 
 
-
 ---
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
@@ -1105,11 +1104,16 @@ plot(stl_s)
 rar_stc <- stack(list(bath_v1 = rar, bath_v2 = rar * 2)) # could be a file path
 class(rar_stc) 
 nlayers(rar_stc)
+```
+
+--
+
+```{R rar_stc1b, cache = TRUE}
 class(rar_stc[[1]]) 
 class(rar_stc[[2]]) 
 ```
 
---- 
+---
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R rar_stc2, cache = TRUE}
@@ -1119,28 +1123,119 @@ plot(rar_stc)
 ---
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R, rar_stc3, cache = TRUE}
-plot(crop(rar_stc, extent(-65, 48, -60, 51)))
+```{R rar_stc3, cache = TRUE}
+plot(crop(rar_stc, extent(-65, -60, 45, 50)))
 ```
 
 
 ---
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R, rar_stc4, cache = TRUE}
-plot(calc(rar_stc, fun = sum)) 
+```{R rar_stc4, cache = TRUE}
+rar_sum <- calc(rar_stc, fun = sum)
+rar_sum
+```
+
+---
+# Stack with [`raster`](https://CRAN.R-project.org/package=raster)
+
+
+```{R rar_stc5, cache = TRUE}
+plot(rar_sum) 
 ```
 
 
 ---
 # Stack with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R, ras_stc, cache = TRUE}
-ras_stc <- c(ras, ras*2, along = "bath_v2")  
-# ras_stc <- c(ras, ras*2)  
-# ras_stc <- stack(list(bath_v1 = rar, bath_v2 = rar2))             
-plot(ras_stc)
-plot(st_apply(ras_stc, c(1,2), sum))    
+```{R ras_stc0}
+ras
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc1}
+ras_stc1 <- c(ras, ras * 2)
+names(ras_stc1) <- c("bath_v1", "bath_v2")
+ras_stc1
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc1b}
+plot(ras_stc1)
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+
+```{R ras_stc2}
+ras_stc1[1] # or ras_stc1["bath_v1"]
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+
+```{R ras_stc2b}
+ras_stc1[2] # or ras_stc1["bath_v2"]
+```
+
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc2c}
+library(dplyr)
+ras_stc1 %>% select("bath_v1")
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc2d}
+ras_stc1 %>% mutate(bath_v3 = bath_v2 * 2)
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc3, cache = TRUE}
+ras_stc2 <- c(ras, ras*2, along = "z")
+ras_stc2
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc4, cache = TRUE}
+plot(ras_stc2)
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc5, cache = TRUE}
+ext <- st_bbox(c(xmin = -65, xmax = -60, ymin = 45, ymax = 50), crs = 4326)
+plot(st_crop(ras_stc2, ext))
+```
+
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc6, cache = TRUE}
+(ras_ap <- st_apply(ras_stc2, c(1, 2), sum))
+```
+
+---
+# Stack with [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R ras_stc6b, cache = TRUE}
+plot(ras_ap)
 ```
 
 
@@ -1148,16 +1243,17 @@ plot(st_apply(ras_stc, c(1,2), sum))
 # `r icon::fontawesome("flag-checkered")` Recap 
 
 
-| Action              | `raster`               | `stars`                |
-|:--------------------|:-----------------------|:-----------------------|
-| Get projection      | `projection()`         | `st_crs()`             |
-| Get bounding box    | `bbox()`               | `st_bbox()`            |
-| Change projection   | `projectRaster()`      | `st_transform()`       |
-| Crop                | `crop()`               | `st_crop()`            |
-| Mask                | `mask()`               | `[]<-`                 |
-| Resample            | `projectRaster()`      | `st_warp()`            |
-| Rasterize           | `rasterize()`          | `st_rasterize()`       |
-| Stack               | `stack()` or `brick()` | `c(along=...)`         |
+| Action                    | `raster`               | `stars`                |
+|:--------------------------|:-----------------------|:-----------------------|
+| Get projection            | `projection()`         | `st_crs()`             |
+| Get bounding box          | `bbox()`               | `st_bbox()`            |
+| Change projection         | `projectRaster()`      | `st_transform()`       |
+| Crop                      | `crop()`               | `st_crop()`            |
+| Mask                      | `mask()`               | `[]<-`                 |
+| Resample                  | `projectRaster()`      | `st_warp()`            |
+| Rasterize                 | `rasterize()`          | `st_rasterize()`       |
+| Stack                     | `stack()` or `brick()` | `c(along=...)`         |
+| Apply functions on stacks | `calc()`               | `st_apply()`           |
 
 
 `r icon::fontawesome("info-circle")` https://r-spatial.github.io/stars/articles/stars6.html
@@ -1191,21 +1287,23 @@ class: inverse, center, middle
 ### Static
 
 - [`tmap`](https://CRAN.R-project.org/package=tmap) `r icon::fontawesome("check")`
-- [`ggplot2`](https://CRAN.R-project.org/package=ggmap) `r icon::fontawesome("check")`
+- [`ggplot2`](https://CRAN.R-project.org/package=ggplot2) 
+    - `r icon::fontawesome("info-circle")` https://r-spatial.github.io/stars/reference/geom_stars.html
+    - `r icon::fontawesome("info-circle")` https://ggplot2.tidyverse.org/reference/geom_tile.html
 - [`ggmap`](https://CRAN.R-project.org/package=ggmap)
+    - `r icon::fontawesome("info-circle")` https://github.com/dkahle/ggmap
 - [`rasterVis`](https://CRAN.R-project.org/package=rasterVis)
+    - `r icon::fontawesome("info-circle")` https://oscarperpinan.github.io/rastervis/
 
 --
 
 ### Interactive 
 
+- [`tmap`](https://CRAN.R-project.org/package=tmap) 
 - [`leaflet`](https://CRAN.R-project.org/package=leaflet)
 - [`mapview`](https://CRAN.R-project.org/package=mapview)
-- [`tmap`](https://CRAN.R-project.org/package=tmap) `r icon::fontawesome("check")`
 
--- 
-
-See day 2 of the workshop.
+`r icon::fontawesome("info-circle")` day 2 of the workshop.
 
 
 ---
@@ -1213,12 +1311,8 @@ See day 2 of the workshop.
 
 
 
+
 ---
-# ggplot2 
-
-
-
---- 
 # tmap
 
 
