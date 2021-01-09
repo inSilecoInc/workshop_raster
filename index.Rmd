@@ -1307,28 +1307,66 @@ class: inverse, center, middle
 
 
 ---
-# base plot 
+# Using `plot()` and `image()` 
 
+--
+
+- `plot()` 
+  - `r icon::fontawesome("arrow-right")` `?plot.stars`
+  - `r icon::fontawesome("arrow-right")` `?raster::plot`
+
+--
+
+- `image()` 
+  - `r icon::fontawesome("arrow-right")` `?image.stars`
+  - `r icon::fontawesome("arrow-right")` `?raster::image`
+
+--
+
+- `par()` : margins, background color, ....
 
 
 
 ---
-# tmap
+# Using `plot()` and `image()` 
 
-
-
----
-# Exercice + countdown
-
-1. Do that 
-2. Do that 
-3. Do that 
-4. Do that 
-5. Do that 
-
-```{r, echo = FALSE}
-countdown::countdown(minutes = 5, seconds = 0)
+```{R, plot0}
+plot(ras)
 ```
+
+
+---
+# Using `plot()` and `image()` 
+
+```{R, pre_plot}
+# breaks
+bks <- c(seq(-5000, 0, 1000), 250, 500, 750, 1000)
+# cols 
+cls <- c("#c7cbce", "#687677", "#222d3d", "#25364a", "#172434", 
+  "#ad6a11", "#e6a331", "#e4be29", "#f2ea8b")
+```
+
+---
+# Using `plot()` and `image()` 
+
+```{R, plot1}
+par(las = 1, bg = "#f79c74", cex.axis = .7, mar = c(2, 2, 2, 4))
+plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
+```
+
+---
+# Using `plot()` and `image()` 
+
+```{R, plot1b}
+par(las = 1, bg = "#f79c74", cex.axis = .7, mar = c(2, 2, 2, 4), oma = c(0, 2, 0 ,2))
+plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
+```
+
+
+---
+# [`tmap`](https://CRAN.R-project.org/package=tmap)
+
+## DAY 2
 
 
 ---

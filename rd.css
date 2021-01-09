@@ -51,7 +51,6 @@ a:hover, a:active {
     margin-bottom: 60px;
   }
   
-  
   .remark-slide-content > inverse {
     width: 112px;
     height: 47px;
@@ -115,6 +114,11 @@ a:hover, a:active {
     font-weight: 400;
   }
   
+  h1 code {
+    color: #0a3152;
+  }
+  
+  
   /* turns off slide numbers for title page: https://github.com/gnab/remark/issues/298 */
   .title-slide .remark-slide-number {
     display: none;
@@ -156,6 +160,7 @@ a:hover, a:active {
     padding: 4px;
   }
   
+
   .code10 .remark-code {
     font-size: 10%;
   }
