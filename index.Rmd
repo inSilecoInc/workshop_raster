@@ -50,7 +50,7 @@ class: title-slide, middle
 <br><br>
 
 .instructors[
-  .font180[Manipulate raster files with `r rfa("r-project")`]
+  .font180[Manipulate rasters with `r rfa("r-project")`]
   <br><br><br>
   .authors140[David Beauchesne & Kevin Cazelles]
   <br><br>
@@ -85,7 +85,7 @@ class: inverse, center, middle
 
 ### Learn how to visualize raster interactively with `r rfa("r-project")`
 
--- 
+--
 
 1. Understand the benefits of manipulating raster files with `r rfa("r-project")`
 
@@ -126,7 +126,8 @@ If after the workshop if what follows makes sense and you feel it is kid of true
 
 > Raster files are grids of equally sized (most often) cells (or pixels).
 
--- 
+--
+
 > Every cell has a value (or a missing values).
 
 --
@@ -603,6 +604,11 @@ countdown::countdown(minutes = 10, seconds = 0)
 
 ### `r rfa("star")` `r rfa("star")` Create a function `conv_raster()` that handles any conversion supported.
 
+--
+
+### `r rfa("star")` `r rfa("star")` `r rfa("star")` Create a function that convert a object of class `RasterLayer` object to a `stars` one (and conversely)
+
+
 <br>
 
 
@@ -660,6 +666,14 @@ rar
 ---
 # What do we have? [`raster`](https://CRAN.R-project.org/package=raster)
 
+```{R raster_obj_val}
+values(rar)
+```
+
+
+---
+# What do we have? [`raster`](https://CRAN.R-project.org/package=raster)
+
 ```{R raster_obj_fun}
 dim(rar)
 ncell(rar)
@@ -674,6 +688,14 @@ extent(rar)
 ```{R stars_obj}
 class(ras)
 ras
+```
+
+---
+# What do we have? [`stars`](https://CRAN.R-project.org/package=stars)
+
+```{R stars_val}
+class(ras[[1]])
+ras[[1]]
 ```
 
 ---
@@ -708,9 +730,25 @@ ras_crs$epsg
 - https://epsg.io/4326
 
 
+---
+# Conversion between [`stars`](https://CRAN.R-project.org/package=stars) and [`raster`](https://CRAN.R-project.org/package=raster)
+
+
+### Use a temporary file (see above)
+
+--
+
+```{R convert}
+rar_c <- st_as_stars(rar) 
+class(rar_c)
+ras_c <- as(ras, "Raster") 
+class(ras_c)
+```
+
+ 
 
 ---
-# Basic computations  with [`raster`](https://CRAN.R-project.org/package=raster)
+# Basic computations with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R bc_rar1}
 class(rar[,])
@@ -765,12 +803,12 @@ plot(ras2)
 countdown::countdown(minutes = 15, seconds = 0)
 ```
 
-### `r rfa("star")` Compute the mean for `bathy` along the latitude or/and longitude (`bathy.tif`)
+### `r rfa("star")` Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter) 
 
 
 --
 
-### `r rfa("star")` `r rfa("star")` Create a function `mean_long_lat()` that computes means along longitude and latitude (`r rfa("star")` `r rfa("star")` `r rfa("star")` do it for `stars` AND `raster`).
+### `r rfa("star")` `r rfa("star")` Create a function `mean_long_lat()` that computes mean elevation/depth along longitude and latitude (`r rfa("star")` `r rfa("star")` `r rfa("star")` include an argument to set an elevation/depth filter).
 
 <br>
 
@@ -815,7 +853,7 @@ rar_crs <- CRS("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0
 ```{R projrar, cache = TRUE}
 rar_t <- projectRaster(rar, crs = rar_crs)
 projection(rar_t)
-plot(rar_t)
+plot(rar)
 ```
 
 
@@ -947,18 +985,18 @@ countdown::countdown(minutes = 10, seconds = 0)
 ---
 # Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R rar_warp, eval = FALSE}
+```{R rar_warp, cache = TRUE}
 # create a raser with the given resolution
 mr <- matrix(runif(21*21), 21, 21)
-rar_template1 <- raster(mr, xmn = -71, xmx = -55, ymn = 43, ymx = 55, crs = projection(rar))
+rar_template1 <- raster(mr, xmn = -71, xmx = -55, ymn = 43, ymx = 55, 
+    crs = projection(rar)) # create template
 plot(rar_template1)
 ```
 
 ---
 # Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R rar_warp2, eval = FALSE}
-# resample 
+```{R rar_warp2, cache = TRUE}
 rar_w1 <- resample(rar, rar_template1)
 plot(rar_w1)
 ```
@@ -966,8 +1004,9 @@ plot(rar_w1)
 ---
 # Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R rar_warp3, eval = FALSE}
-rar_template2 <- raster(xmn = -71, xmx = -55, ymn = 43, ymx = 55, crs = projection(rar), resolution = .25)
+```{R rar_warp3, cache = TRUE}
+rar_template2 <- raster(xmn = -71, xmx = -55, ymn = 43, ymx = 55, 
+  crs = projection(rar), resolution = .25) # create template
 plot(resample(rar, rar_template1))
 ```
 
@@ -975,9 +1014,9 @@ plot(resample(rar, rar_template1))
 ---
 # Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R ras_warp, eval = FALSE}
-ras_template1 <- st_as_stars(st_bbox(ras), nx = 21, ny = 21, values = runif(21
-   *21))
+```{R ras_warp, cache = TRUE}
+ras_template1 <- st_as_stars(st_bbox(ras), nx = 21, ny = 21, 
+  values = runif(21 * 21)) # create template
 ras_w1 <- st_warp(ras, ras_template1)
 plot(ras_w1)
 ```
@@ -987,7 +1026,7 @@ plot(ras_w1)
 ---
 # Warping/Resampling with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R ras_warp2, eval = FALSE}
+```{R ras_warp2, cache = TRUE}
 ras_w2 <- st_warp(ras, cellsize = 0.25, crs = st_crs(ras)) 
 plot(st_warp(ras, ras_w2))
 ```
@@ -998,46 +1037,47 @@ plot(st_warp(ras, ras_w2))
 ---
 # Rasterize 
 
-### Vectors to rasters 
+## Vectors `r icon::fontawesome("arrow-right")` Raster 
+
+--
+
+## Create a raster template 
+
 
 
 ---
 # Rasterize with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R rasterr1}
-# # create grid forst
-# grd = st_as_stars(st_bbox(ls), nx = 10, ny = 10, xlim = c(0, 1>
-#         values = NA_real_)
-stl_r <- st_rasterize(stl, dy = .1, dx = .1)
+```{R rasterr1, cache = TRUE, eval = FALSE}
+stl_r <- rasterize(stl, dy = .1, dx = .1)
 plot(stl_r)
 ```
 
 
 
---- 
+---
 # Rasterize with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R rasters1}
-# # create grid forst
-# grd = st_as_stars(st_bbox(ls), nx = 10, ny = 10, xlim = c(0, 1>
-#         values = NA_real_)
-stl_r <- st_rasterize(stl, dy = .1, dx = .1)
-plot(stl_r)
+```{R rasters1, cache = TRUE}
+stl_s <- st_rasterize(stl, dy = .1, dx = .1)
+plot(stl_s)
 ```
 
+
+<!-- https://r-spatial.github.io/stars/articles/stars5.html -->
 
 
 
 ---
 # Stack 
 
-- Collection of rasters 
+### - Collection of rasters 
 
-- Same extent/resolution
+### - Same extent/resolution
 
-- Multi-band rasters (satellite images)
+### - Multi-band rasters (satellite images)
 
-- Handle several rasters at once 
+### - Handle several rasters at once 
 
 
 ---
@@ -1048,9 +1088,9 @@ plot(stl_r)
 
 --
 
-> The main difference is that a RasterStack is loose collection of RasterLayer objects that can refer to different files (but must all have the same extent and resolution), whereas a RasterBrick can only point to a single file.
+> The main difference is that a RasterStack is loose collection of RasterLayer objects that can refer to different files (but must all have the same extent and resolution), whereas a RasterBrick can only point to a single file. 
 
-https://rspatial.org/raster/spatial/4-rasterdata.html#rasterstack-and-rasterbrick
+.right[.font80[ `r icon::fontawesome("info-circle")` https://rspatial.org/raster/spatial/4-rasterdata.html#rasterstack-and-rasterbrick]]
 
 --
 
@@ -1061,17 +1101,33 @@ https://rspatial.org/raster/spatial/4-rasterdata.html#rasterstack-and-rasterbric
 ---
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R, rar_stc, cache = TRUE}
-rar_stc <- stack(list(bath_v1 = rar, bath_v2 = rar*2))
-class(rar) 
+```{R rar_stc, cache = TRUE}
+rar_stc <- stack(list(bath_v1 = rar, bath_v2 = rar * 2)) # could be a file path
+class(rar_stc) 
+nlayers(rar_stc)
+class(rar_stc[[1]]) 
+class(rar_stc[[2]]) 
+```
+
+--- 
+# Stack with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R rar_stc2, cache = TRUE}
 plot(rar_stc)
 ```
 
 ---
 # Stack with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R, rar_stc2}
+```{R, rar_stc3, cache = TRUE}
 plot(crop(rar_stc, extent(-65, 48, -60, 51)))
+```
+
+
+---
+# Stack with [`raster`](https://CRAN.R-project.org/package=raster)
+
+```{R, rar_stc4, cache = TRUE}
 plot(calc(rar_stc, fun = sum)) 
 ```
 
@@ -1107,17 +1163,7 @@ plot(st_apply(ras_stc, c(1,2), sum))
 `r icon::fontawesome("info-circle")` https://r-spatial.github.io/stars/articles/stars6.html
 
 
-
-
----
-# Exercice + countdown
-
-To be added 
-
-```{r, echo = FALSE}
-countdown::countdown(minutes = 5, seconds = 0)
-```
-
+<!-- exo? -->
 
 
 
