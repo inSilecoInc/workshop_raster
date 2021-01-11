@@ -115,7 +115,7 @@ class: inverse, center, middle
 
 ???
 
-If after the workshop if what follows makes sense and you feel it is kid of true, it would a success. 
+If after the workshop what follows makes sense and you feel it is kind of true, it would a success. 
 
 
 
@@ -236,7 +236,7 @@ Very few people look at the R source code but many people are now involved in pa
 R Python Julia, whatever, language itself matters less that these
 If you have time to learn a bit it might sometime makes sense, notably to work with other colleagues.
 
-You don't start at 0
+You don't start from scratch
 
 
 
@@ -598,7 +598,7 @@ countdown::countdown(minutes = 10, seconds = 0)
 
 --
 
-### `r rfa("star")` Convert `bathy.tif` into `bathy.grd`.
+### `r rfa("star")` Convert `bathy.tif` into `bathy.grd` (https://gdal.org/drivers/raster/rraster.html#raster-rraster)
 
 --
 
@@ -606,21 +606,82 @@ countdown::countdown(minutes = 10, seconds = 0)
 
 --
 
-### `r rfa("star")` `r rfa("star")` `r rfa("star")` Create a function that convert a object of class `RasterLayer` object to a `stars` one (and conversely)
+### `r rfa("star")` `r rfa("star")` `r rfa("star")` Create a function that converts a object of class `RasterLayer` object to a `stars` one (and conversely)
 
 
 <br>
 
 
 
+---
+# Solution `r rfa("star")`
+
+### Convert `bathy.tif` into `bathy.grd` 
+
+```{R sol1aa, cache = TRUE}
+# raster 
+rr <- raster("data/bathy.tif")
+writeRaster(rr, filename = "output/rar.grd", overwrite = TRUE)
+```
+
+--
+
+```{R sol1ab, cache = TRUE}
+# stars 
+rs <- read_stars("data/bathy.tif")
+write_stars(rs, dsn = "output/ras.grd", driver = "rraster")
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`
+
+### Create a function `conv_raster()` that handles any conversion supported.
+
+```{R sol1ba, cache = TRUE}
+# raster 
+conv_raster_r <- function(input, output, ...) {
+  rr <- raster(input)
+  writeRaster(rr, filename = output, ...)
+}
+conv_raster_r("data/bathy.tif", "output/rar2.grd", overwrite = TRUE)
+```
+
+--
+
+```{R sol1bb, cache = TRUE}
+# stars
+conv_raster_s <- function(from, to, ...) {
+  rs <- read_stars("data/bathy.tif")
+  write_stars(rs, dsn = "output/ras.grd",...)
+}
+conv_raster_s("data/bathy.tif", "output/ras2.grd", driver = "rraster")
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")` `r rfa("star")`
+
+### Create a function that converts a object of class `RasterLayer` object to a `stars` one (and conversely)
 
 
-
-
-
-
-
-
+```{R sol1c, cache = TRUE}
+conv_raster_stars <- function(x) {
+  if (class(x) == "RasterLayer") {
+    tmp <- tempfile(fileext = ".tif")
+    writeRaster(x, tmp)
+    read_stars(tmp)
+  } else if (class(x) == "stars") {
+    tmp <- tempfile(fileext = ".tif")
+    write_stars(x, tmp)
+    raster(tmp)
+  } else {
+    warning("x should be of class `stars` or `RasterLayer`")
+    NULL
+  }
+}
+ras_n <- conv_raster_stars(rar)
+rar_n <- conv_raster_stars(ras)
+# conv_raster_stars(1)
+```
 
 
 
@@ -738,14 +799,17 @@ ras_crs$epsg
 
 --
 
-```{R convert}
+```{R convert1}
 rar_c <- st_as_stars(rar) 
 class(rar_c)
+```
+--
+
+```{R convert2}
 ras_c <- as(ras, "Raster") 
 class(ras_c)
 ```
 
- 
 
 ---
 # Basic computations with [`raster`](https://CRAN.R-project.org/package=raster)
@@ -803,8 +867,7 @@ plot(ras2)
 countdown::countdown(minutes = 15, seconds = 0)
 ```
 
-### `r rfa("star")` Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter) 
-
+### `r rfa("star")` Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter)
 
 --
 
@@ -812,6 +875,109 @@ countdown::countdown(minutes = 15, seconds = 0)
 
 <br>
 
+
+---
+# Solution `r rfa("star")` 
+
+### Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter)
+
+```{R sol2aa}
+flt <- 0
+# raster 
+rr <- rar 
+rr[rr < flt] <- NA
+mean(values(rr), na.rm = TRUE)
+```
+
+--
+
+```{R sol2ab}
+flt <- 0
+# raster 
+rs <- ras
+rs[[1]][rs[[1]] < units::as_units(flt, "m")] <- NA # filter
+mean(rs[[1]], na.rm = TRUE)
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
+
+### Create a function `mean_long_lat()` that computes mean elevation/depth along longitude and latitude (include an argument to set an elevation/depth filter).
+
+
+```{R sol2ba1, cache = TRUE}
+# raster
+mean_long_lat_r <- function(x, gt_na = NULL, lt_na = NULL) {
+  m <- as.matrix(x)
+  if (!is.null(lt_na)) m[m < lt_na] <- NA
+  if (!is.null(gt_na)) m[m > gt_na] <- NA 
+  list(
+    m_lon = apply(m, 1, mean, na.rm = TRUE),
+    m_lat = apply(m, 2, mean, na.rm = TRUE)
+  )
+} 
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
+
+
+```{R sol2ba2, cache = TRUE, fig.width = 7}
+res1 <- mean_long_lat_r(rar)
+par(mfrow = c(1, 2))
+plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
+plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")    
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
+
+
+```{R sol2ba3, cache = TRUE, fig.width = 7}
+res2 <- mean_long_lat_r(rar, gt_na = 0)
+par(mfrow = c(1, 2))
+plot(res2$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
+plot(res2$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
+
+
+```{R sol2bb1}
+# stars
+mean_long_lat_s <- function(x, gt_na = NULL, lt_na = NULL) {
+  m <- units::drop_units(ras[[1]])
+  if (!is.null(lt_na)) m[m < lt_na] <- NA
+  if (!is.null(gt_na)) m[m > gt_na] <- NA 
+  list(
+    m_lon = apply(m, 1, mean, na.rm = TRUE),
+    m_lat = apply(m, 2, mean, na.rm = TRUE)
+  )
+} 
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
+
+
+```{R sol2bb2, cache = TRUE, fig.width = 7}
+res1 <- mean_long_lat_s(ras)
+par(mfrow = c(1, 2))
+plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
+plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")    
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
+
+
+```{R sol2bb3, cache = TRUE, fig.width = 7}
+res2 <- mean_long_lat_s(ras, gt_na = 0)
+par(mfrow = c(1, 2))
+plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
+plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")    
+```
 
 
 
@@ -962,9 +1128,9 @@ plot(ras_mi)
 
 
 ---
-# Exercice 
+# `r icon::fontawesome("terminal")` Mean depth of the St-Lawrence
 
-- `r icon::fontawesome("star")` Compute the mean depth of the St-Lawrence (Gulf and river)
+- `r rfa("star")` Compute the mean depth of the St-Lawrence (Gulf and river)
 
 - `r icon::fontawesome("star")` `r icon::fontawesome("star")` Compare the depth of the Gulf of the St-Lawrence and the depth of the St-Lawrence river (various solutions!)
 
@@ -973,8 +1139,84 @@ plot(ras_mi)
 countdown::countdown(minutes = 10, seconds = 0)
 ```
 
+---
+# Solution `r rfa("star")`
 
-<!-- PAUSE?? -->
+```{R sol3aa, cache = TRUE}
+# raster 
+rar_m <- mask(rar, stl)
+mean(ras_m[[1]], na.rm = TRUE)
+```
+
+```{R sol3ab, cache = TRUE}
+# stars 
+ras_m <- ras[stl]
+mean(ras_m[[1]], na.rm = TRUE)
+```
+
+
+---
+# Solution `r rfa("star")` `r rfa("star")`
+
+--
+
+```{R sol3b0, cache = TRUE}
+plot(rar)
+rect(-71, 43, -65.1, 55, border = 2, lwd = 4) 
+rect(-64.9, 43, -55, 55, lwd = 4) 
+```
+
+???
+
+You can find other shapefile
+
+---
+# Solution `r rfa("star")` `r rfa("star")`
+
+```{R sol3b1, cache = TRUE}
+# raster 
+rar_m <- mask(rar, stl)
+rar_river <- crop(rar_m, extent(-71, -65, 43, 55))
+rar_gulf <- crop(rar_m, extent(-65, -55, 43, 55))
+mean(values(rar_river), na.rm = TRUE)
+mean(values(rar_gulf), na.rm = TRUE)
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`
+
+```{R sol3b1b, cache = TRUE, fig.width = 7.5, echo = -1}
+par(mfrow = c(1, 2), oma = c(0, 2, 0, 3))
+plot(rar_river)
+plot(rar_gulf)
+```
+
+---
+# Solution `r rfa("star")` `r rfa("star")`
+
+```{R sol3b1c, cache = TRUE}
+mean(values(rar_river), na.rm = TRUE)
+mean(values(rar_gulf), na.rm = TRUE)
+```
+
+
+---
+# Solution `r rfa("star")` `r rfa("star")`
+
+```{R sol3b2, cache = TRUE}
+# stars 
+ras_m <- ras[stl]
+ras_river <- st_crop(ras_m, 
+    st_bbox(c(xmin = -71, xmax = -65, ymin = 43, ymax = 55), crs = 4326)
+)
+ras_gulf <- st_crop(ras_m, 
+  st_bbox(c(xmin = -65, xmax = -55, ymin = 43, ymax = 55), crs = 4326)
+)
+mean(ras_river[[1]], na.rm = TRUE)
+mean(ras_gulf[[1]], na.rm = TRUE)
+```
+
+
 
 
 ---
@@ -1366,7 +1608,8 @@ plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
 ---
 # [`tmap`](https://CRAN.R-project.org/package=tmap)
 
-## DAY 2
+![https://github.com/mtennekes/tmap](img/tmp)
+
 
 
 ---
