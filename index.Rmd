@@ -1619,6 +1619,39 @@ plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
 ```
 
 
+
+---
+# [`mapedit`](https://CRAN.R-project.org/package=mapedit)
+
+![](img/mapedit.png)
+
+`r icon::fontawesome("info-circle")` https://github.com/r-spatial/mapedit
+
+---
+# [`mapedit`](https://CRAN.R-project.org/package=mapedit) *live*
+
+```{R, eval = FALSE}
+install.packages("mapedit")
+library(mapedit)
+anticosti <- mapedit()
+```
+
+---
+# [`mapedit`](https://CRAN.R-project.org/package=mapedit)  
+
+```{R, eval = FALSE}
+stl <- sf::st_read("data/st_laurence.geojson")
+png("output/anticosti.png", width = 7, height = 5, units = "in", res = 300)
+plot(st_geometry(stl))
+plot(st_geometry(anticosti), col = 2, add = TRUE)  
+dev.off()
+```
+
+.center[![:scale 70%](img/anticosti.png)]
+
+
+
+
 ---
 # [`tmap`](https://CRAN.R-project.org/package=tmap)
 
