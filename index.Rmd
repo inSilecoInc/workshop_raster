@@ -55,13 +55,19 @@ class: title-slide, middle
   .authors140[David Beauchesne & Kevin Cazelles]
   <br><br>
   `r format(Sys.time(), '%B %d, %Y')`
+  <br><br>
+  .font200[
+  [`r icon::fontawesome("github")`](https://github.com/inSilecoInc)
+  [`r icon::fontawesome("database")`]()
+  [`r icon::fontawesome("file-pdf")`]()
+  ]
 ]
 
-<br><br><br><br>
 
+<br><br>
 <img src="img/logoW.png" width="150px"></img>
 
-.instructors[Content under [`r rfa("creative-commons")` `r rfa("creative-commons-by")`](https://creativecommons.org/licenses/by/4.0/)  unless othewise specified]
+.instructors[Content under [`r rfa("creative-commons")` `r rfa("creative-commons-by")`](https://creativecommons.org/licenses/by/4.0/) unless otherwise specified]
 
 
 
@@ -553,7 +559,7 @@ ra_dr$name[ra_dr$create]
 ---
 # Write with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R write_raster1, eval = FALSE}
+```{R write_raster1, cache = TRUE}
 writeRaster(rar, filename = "output/rar.gpkg", format = "GPKG", overwrite = TRUE)
 ```
 
@@ -568,7 +574,7 @@ sort(st_dr$name[st_dr$write])
 ---
 # Write with [`stars`](https://CRAN.R-project.org/package=stars)
 
-```{R write_stars1, eval = FALSE}
+```{R write_stars1, cache = TRUE}
 write_stars(ras, dsn = "output/ras.gpkg", driver = "GPKG")
 ```
 
@@ -1078,7 +1084,7 @@ Let's use a shapefile of the Gulf of the St-Lawrence
 
 Values outside of a given geometry set to `NA`
 
-```{R plot_stl, eval = FALSE} 
+```{R plot_stl, cache = TRUE} 
 plot(sf::st_geometry(stl))
 ```
 
@@ -1229,7 +1235,7 @@ mean(ras_gulf[[1]], na.rm = TRUE)
 # Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
 
 ```{R rar_warp, cache = TRUE}
-# create a raser with the given resolution
+# create a raster with the given resolution
 mr <- matrix(runif(21*21), 21, 21)
 rar_template1 <- raster(mr, xmn = -71, xmx = -55, ymn = 43, ymx = 55, 
     crs = projection(rar)) # create template
@@ -1287,15 +1293,14 @@ plot(st_warp(ras, ras_w2))
 ## Create a raster template 
 
 
-
 ---
 # Rasterize with [`raster`](https://CRAN.R-project.org/package=raster)
 
-```{R rasterr1, cache = TRUE, eval = FALSE}
-stl_r <- rasterize(stl, dy = .1, dx = .1)
+```{R rasterr1, eval = FALSE}
+# not run
+stl_r <- rasterize(stl, rar)
 plot(stl_r)
 ```
-
 
 
 ---
@@ -1307,7 +1312,6 @@ plot(stl_s)
 ```
 
 
-<!-- https://r-spatial.github.io/stars/articles/stars5.html -->
 
 
 
@@ -1717,7 +1721,7 @@ elv + shp + oth
 ---
 # Solution 
 
-```{R, include = TRUE}
+```{R, include = TRUE, eval = FALSE}
 # manipulation 
 ras_v <- ras[stl]
 names(ras_v) <- "Elevation"
@@ -1735,7 +1739,7 @@ elv <- tm_shape(ras_v) +
 ---
 # Solution 
 
-```{R, include = TRUE}
+```{R, include = TRUE, eval = FALSE}
 # borders 
 shp <- tm_shape(stl) + tm_borders(col = "black", lwd = 2)
 
