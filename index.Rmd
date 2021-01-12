@@ -28,8 +28,6 @@ knitr::opts_chunk$set(
   fig.align = 'center',
   width = 120
 )
-mypar <- list(fg = "#37abc8", bg = "transparent", las = 1)
-par(mypar)
 # library(icon)
 rfa <- function(...) icon::fontawesome(...)
 library(raster)
@@ -47,7 +45,7 @@ class: title-slide, middle
 
 ## .font200[`r icon::fontawesome("r-project")`asters]
 
-<br><br>
+<br>
 
 .instructors[
   .font180[Manipulate rasters with `r rfa("r-project")`]
@@ -55,16 +53,16 @@ class: title-slide, middle
   .authors140[David Beauchesne & Kevin Cazelles]
   <br><br>
   `r format(Sys.time(), '%B %d, %Y')`
-  <br><br>
+  <br>
   .font200[
   [`r icon::fontawesome("github")`](https://github.com/inSilecoInc)
-  [`r icon::fontawesome("database")`]()
-  [`r icon::fontawesome("file-pdf")`]()
+  [`r icon::fontawesome("database")`](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
+  [`r icon::fontawesome("file-pdf")`](https://github.com/inSilecoInc/workshop_raster/raw/main/raster_p1.pdf)
   ]
 ]
 
 
-<br><br>
+<br><br><br>
 <img src="img/logoW.png" width="150px"></img>
 
 .instructors[Content under [`r rfa("creative-commons")` `r rfa("creative-commons-by")`](https://creativecommons.org/licenses/by/4.0/) unless otherwise specified]
@@ -420,7 +418,7 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 ![Accessed 16/12/2020](img/gebco.png)
 
 - https://download.gebco.net/ 
-- `r icon::fontawesome("link")` [link to the file](2Badded)
+- `r icon::fontawesome("link")` [ata_and_script.zip](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
 
 
 
