@@ -29,7 +29,8 @@ knitr::opts_chunk$set(
   width = 120
 )
 # library(icon)
-library(icon)
+# library(icon)
+icon::download_fontawesome()
 rfa <- function(...) icon::fontawesome(...)
 library(raster)
 rar <- raster("data/bathy.tif")  
