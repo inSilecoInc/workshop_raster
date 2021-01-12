@@ -1,0 +1,292 @@
+pre code {
+  padding: 1em 1em 1em 1.5em !important;
+  width: 100%;
+  /* margin-left: auto;  */
+  /* position: absolute; */
+  /* left: 0; */
+  -webkit-transform: translateX(-1.2em);
+}
+
+
+a {
+  color: #37abc8;
+}
+
+a:hover, a:active {
+  text-decoration: underline;
+}
+
+.remark-inline-code.countdown-time {
+  background-color: initial !important;
+  font-size: 50%
+}
+
+.remark-slide-content {
+    background-color: #FAFAFA;
+    border-top: 80px solid #0a3152;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: .8em .8em 1.2em .8em;
+    color: #0a3152;
+  }
+  
+
+  .inverse {
+    background-color: #0a3152;
+    text-shadow: none;
+  }
+  
+  .remark-slide-content > h1 {
+    font-family: 'Roboto Slab';
+    font-weight: normal;
+    font-size: 42px;
+    margin-top: -95px;
+    margin-bottom: 40px;
+    margin-left: -00px;
+    color: #FAFAFA;
+  }
+  
+  .inverse > h1 {
+    margin-bottom: 60px;
+  }
+  
+  .remark-slide-content > inverse {
+    width: 112px;
+    height: 47px;
+    position: absolute;
+  }
+  
+  /* Removes colored bar from top of the slide resulting in a clear slide */
+  .clear{
+    border-top: 0px solid #FAFAFA;
+  }
+  
+  .remark-slide-content > h2, h3, h4 {
+    padding-top: -30px;
+    padding-bottom: 00px;
+    color: #0a3152;
+    text-shadow: none;
+    font-weight: 400;
+    text-align: left;
+    margin-left: 00px;
+    margin-bottom: -10px;
+  }
+
+  .remark-slide-content > h2, .pull-left > h2, .pull-right > h2 {
+    font-size: 35px;
+    color: #0a3152;
+    font-weight: bold;
+  }
+  
+  .remark-slide-content > h3, .pull-left > h3, .pull-right > h3 {
+    font-size: 30px;
+  }
+
+  .remark-slide-content > h3, .pull-left > h3, .pull-right > h3 {
+    font-size: 25px;
+  }
+  
+  .remark-slide-number {
+    font-size: 13pt;
+    font-family: 'Fira Sans';
+    color: #272822;
+    opacity: 1;
+  }
+
+  .inverse .remark-slide-number {
+    font-size: 13pt;
+    font-family: 'Fira Sans';
+    color: #FAFAFA;
+    opacity: 1;
+  }
+
+  .inverse h1 {
+    font-size: 37pt;
+    color: #FAFAFA;
+    opacity: 1;
+  }
+
+  .inverse h2 {
+    font-size: 20pt;
+    color: #FAFAFA;
+    text-align: center;
+    font-weight: 400;
+  }
+  
+  h1 code {
+    color: #0a3152;
+  }
+  
+  
+  /* turns off slide numbers for title page: https://github.com/gnab/remark/issues/298 */
+  .title-slide .remark-slide-number {
+    display: none;
+  }
+
+  .title-slide {
+    background-image: url('img/raster_ex.png');
+    background-color: #0a3152;
+    background-size: contain;
+    border: 0px;
+    background-position: 580px 0;
+    line-height: 1;
+    }
+
+  .instructors {
+    font-size: 15px;
+    color: #e7e8e2; 
+    }
+  
+  .remark-slide table {
+    margin-top: 20px;
+  }
+
+  .title-slide h1 {
+    color: #e7e8e2; 
+    font-size: 40px;
+    margin-top: 0px;
+    margin-right: 300px;
+    }
+  
+  .title-slide h2, .title-slide h3 {
+    color: #e7e8e2; 
+    }
+  
+  .remark-inline-code {
+    /* background: #F5F5F5; /* lighter */
+    background: #e7e8e2; /* darker */
+    border-radius: 3px;
+    padding: 4px;
+  }
+  
+
+  .code10 .remark-code {
+    font-size: 10%;
+  }
+  
+  .code20 .remark-code {
+    font-size: 20%;
+  }
+  
+  .code30 .remark-code {
+    font-size: 30%;
+  }
+  
+  .code40 .remark-code {
+    font-size: 40%;
+  }
+  
+  .code50 .remark-code {
+    font-size: 50%;
+  }
+  
+  .code60 .remark-code {
+    font-size: 60%;
+  }
+  
+  .code70 .remark-code {
+    font-size: 70%;
+  }
+  
+  .code80 .remark-code {
+    font-size: 80%;
+  }
+  
+  .code90 .remark-code {
+    font-size: 90%;
+  }
+  
+  .code100 .remark-code {
+    font-size: 100%;
+  }
+  
+  .font10 {
+    font-size: 10%;
+  }
+  
+  .font20 {
+    font-size: 20%;
+  }
+  
+  .font30 {
+    font-size: 30%;
+  }
+  
+  .font40 {
+    font-size: 40%;
+  }
+  
+  .font50 {
+    font-size: 50%;
+  }
+  
+  .font60 {
+    font-size: 60%;
+  }
+  
+  .font70 {
+    font-size: 70%;
+  }
+  
+  .font80 {
+    font-size: 80%;
+  }
+  
+  .font90 {
+    font-size: 90%;
+  }
+  
+  .font100 {
+    font-size: 100%;
+  }
+  
+  .font110 {
+    font-size: 110%;
+  }
+  
+  .font120 {
+    font-size: 120%;
+  }
+  
+  .font130 {
+    font-size: 130%;
+  }
+  
+  .font140 {
+    font-size: 140%;
+  }
+  
+  .font150 {
+    font-size: 150%;
+  }
+  
+  .font160 {
+    font-size: 160%;
+  }
+  .font170 {
+    font-size: 170%;
+  }
+  .font180 {
+    font-size: 180%;
+  }
+  .font190 {
+    font-size: 190%;
+  }
+  .font200 {
+    font-size: 200%;
+  }
+  .font250 {
+    font-size: 250%;
+  }
+  .font300 {
+    font-size: 300%;
+  }
+  .font400 {
+    font-size: 400%;
+  }
+  
+  .authors140 {
+    font-size: 140%;
+    color: #e0b94c;
+  }
