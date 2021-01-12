@@ -55,9 +55,9 @@ class: title-slide, middle
   `r format(Sys.time(), '%B %d, %Y')`
   <br>
   .font200[
-  [`r icon::fontawesome("github")`](https://github.com/inSilecoInc)
-  [`r icon::fontawesome("database")`](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
-  [`r icon::fontawesome("file-pdf")`](https://github.com/inSilecoInc/workshop_raster/raw/main/raster_p1.pdf)
+  [`r rfa("github")`](https://github.com/inSilecoInc)
+  [`r rfa("database")`](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
+  [`r rfa("file-pdf")`](https://github.com/inSilecoInc/workshop_raster/raw/main/raster_p1.pdf)
   ]
 ]
 
@@ -626,7 +626,7 @@ countdown::countdown(minutes = 10, seconds = 0)
 
 ### Convert `bathy.tif` into `bathy.grd` 
 
-```{R sol1aa, cache = TRUE, include = TRUE}
+```{R sol1aa, cache = TRUE, include = FALSE}
 # raster 
 rr <- raster("data/bathy.tif")
 writeRaster(rr, filename = "output/rar.grd", overwrite = TRUE)
@@ -634,7 +634,7 @@ writeRaster(rr, filename = "output/rar.grd", overwrite = TRUE)
 
 --
 
-```{R sol1ab, cache = TRUE, include = TRUE}
+```{R sol1ab, cache = TRUE, include = FALSE}
 # stars 
 rs <- read_stars("data/bathy.tif")
 write_stars(rs, dsn = "output/ras.grd", driver = "rraster")
@@ -645,7 +645,7 @@ write_stars(rs, dsn = "output/ras.grd", driver = "rraster")
 
 ### Create a function `conv_raster()` that handles any conversion supported.
 
-```{R sol1ba, cache = TRUE, include = TRUE}
+```{R sol1ba, cache = TRUE, include = FALSE}
 # raster 
 conv_raster_r <- function(input, output, ...) {
   rr <- raster(input)
@@ -656,7 +656,7 @@ conv_raster_r("data/bathy.tif", "output/rar2.grd", overwrite = TRUE)
 
 --
 
-```{R sol1bb, cache = TRUE, include = TRUE}
+```{R sol1bb, cache = TRUE, include = FALSE}
 # stars
 conv_raster_s <- function(from, to, ...) {
   rs <- read_stars("data/bathy.tif")
@@ -671,7 +671,7 @@ conv_raster_s("data/bathy.tif", "output/ras2.grd", driver = "rraster")
 ### Create a function that converts a object of class `RasterLayer` object to a `stars` one (and conversely)
 
 
-```{R sol1c, cache = TRUE, include = TRUE}
+```{R sol1c, cache = TRUE, include = FALSE}
 conv_raster_stars <- function(x) {
   if (class(x) == "RasterLayer") {
     tmp <- tempfile(fileext = ".tif")
@@ -889,7 +889,7 @@ countdown::countdown(minutes = 15, seconds = 0)
 
 ### Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter)
 
-```{R sol2aa, include = TRUE}
+```{R sol2aa, include = FALSE}
 flt <- 0
 # raster 
 rr <- rar 
@@ -899,7 +899,7 @@ mean(values(rr), na.rm = TRUE)
 
 --
 
-```{R sol2ab, include = TRUE}
+```{R sol2ab, include = FALSE}
 flt <- 0
 # raster 
 rs <- ras
@@ -913,7 +913,7 @@ mean(rs[[1]], na.rm = TRUE)
 ### Create a function `mean_long_lat()` that computes mean elevation/depth along longitude and latitude (include an argument to set an elevation/depth filter).
 
 
-```{R sol2ba1, cache = TRUE, include = TRUE}
+```{R sol2ba1, cache = TRUE, include = FALSE}
 # raster
 mean_long_lat_r <- function(x, gt_na = NULL, lt_na = NULL) {
   m <- as.matrix(x)
@@ -930,7 +930,7 @@ mean_long_lat_r <- function(x, gt_na = NULL, lt_na = NULL) {
 # Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
 
 
-```{R sol2ba2, cache = TRUE, fig.width = 7, include = TRUE}
+```{R sol2ba2, cache = TRUE, fig.width = 7, include = FALSE}
 res1 <- mean_long_lat_r(rar)
 par(mfrow = c(1, 2))
 plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
@@ -941,7 +941,7 @@ plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index
 # Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
 
 
-```{R sol2ba3, cache = TRUE, fig.width = 7, include = TRUE}
+```{R sol2ba3, cache = TRUE, fig.width = 7, include = FALSE}
 res2 <- mean_long_lat_r(rar, gt_na = 0)
 par(mfrow = c(1, 2))
 plot(res2$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
@@ -952,7 +952,7 @@ plot(res2$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index
 # Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
 
 
-```{R sol2bb1, include = TRUE}
+```{R sol2bb1, include = FALSE}
 # stars
 mean_long_lat_s <- function(x, gt_na = NULL, lt_na = NULL) {
   m <- units::drop_units(ras[[1]])
@@ -969,7 +969,7 @@ mean_long_lat_s <- function(x, gt_na = NULL, lt_na = NULL) {
 # Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
 
 
-```{R sol2bb2, cache = TRUE, fig.width = 7, include = TRUE}
+```{R sol2bb2, cache = TRUE, fig.width = 7, include = FALSE}
 res1 <- mean_long_lat_s(ras)
 par(mfrow = c(1, 2))
 plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
@@ -980,7 +980,7 @@ plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index
 # Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
 
 
-```{R sol2bb3, cache = TRUE, fig.width = 7, include = TRUE}
+```{R sol2bb3, cache = TRUE, fig.width = 7, include = FALSE}
 res2 <- mean_long_lat_s(ras, gt_na = 0)
 par(mfrow = c(1, 2))
 plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
@@ -1150,13 +1150,13 @@ countdown::countdown(minutes = 10, seconds = 0)
 ---
 # Solution `r rfa("star")`
 
-```{R sol3aa, cache = TRUE, include = TRUE}
+```{R sol3aa, cache = TRUE, include = FALSE}
 # raster 
 rar_m <- mask(rar, stl)
 mean(ras_m[[1]], na.rm = TRUE)
 ```
 
-```{R sol3ab, cache = TRUE, include = TRUE}
+```{R sol3ab, cache = TRUE, include = FALSE}
 # stars 
 ras_m <- ras[stl]
 mean(ras_m[[1]], na.rm = TRUE)
@@ -1168,7 +1168,7 @@ mean(ras_m[[1]], na.rm = TRUE)
 
 --
 
-```{R sol3b0, cache = TRUE, include = TRUE}
+```{R sol3b0, cache = TRUE, include = FALSE}
 plot(rar)
 rect(-71, 43, -65.1, 55, border = 2, lwd = 4) 
 rect(-64.9, 43, -55, 55, lwd = 4) 
@@ -1181,7 +1181,7 @@ You can find other shapefile
 ---
 # Solution `r rfa("star")` `r rfa("star")`
 
-```{R sol3b1, cache = TRUE, include = TRUE}
+```{R sol3b1, cache = TRUE, include = FALSE}
 # raster 
 rar_m <- mask(rar, stl)
 rar_river <- crop(rar_m, extent(-71, -65, 43, 55))
@@ -1193,7 +1193,7 @@ mean(values(rar_gulf), na.rm = TRUE)
 ---
 # Solution `r rfa("star")` `r rfa("star")`
 
-```{R sol3b1b, cache = TRUE, fig.width = 7.5, echo = -1, include = TRUE}
+```{R sol3b1b, cache = TRUE, fig.width = 7.5, echo = -1, include = FALSE}
 par(mfrow = c(1, 2), oma = c(0, 2, 0, 3))
 plot(rar_river)
 plot(rar_gulf)
@@ -1202,7 +1202,7 @@ plot(rar_gulf)
 ---
 # Solution `r rfa("star")` `r rfa("star")`
 
-```{R sol3b1c, cache = TRUE, include = TRUE}
+```{R sol3b1c, cache = TRUE, include = FALSE}
 mean(values(rar_river), na.rm = TRUE)
 mean(values(rar_gulf), na.rm = TRUE)
 ```
@@ -1211,7 +1211,7 @@ mean(values(rar_gulf), na.rm = TRUE)
 ---
 # Solution `r rfa("star")` `r rfa("star")`
 
-```{R sol3b2, cache = TRUE, include = TRUE}
+```{R sol3b2, cache = TRUE, include = FALSE}
 # stars 
 ras_m <- ras[stl]
 ras_river <- st_crop(ras_m, 
@@ -1723,7 +1723,7 @@ elv + shp + oth
 ---
 # Solution 
 
-```{R, include = TRUE, eval = FALSE}
+```{R, include = FALSE, eval = FALSE}
 # manipulation 
 ras_v <- ras[stl]
 names(ras_v) <- "Elevation"
@@ -1741,7 +1741,7 @@ elv <- tm_shape(ras_v) +
 ---
 # Solution 
 
-```{R, include = TRUE, eval = FALSE}
+```{R, include = FALSE, eval = FALSE}
 # borders 
 shp <- tm_shape(stl) + tm_borders(col = "black", lwd = 2)
 
