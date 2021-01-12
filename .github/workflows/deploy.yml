@@ -38,8 +38,12 @@ jobs:
         run: |
           icon::download_fontawesome()
           rmarkdown::render("index.Rmd", "all")
+        shell: Rscript {0}
+      - name: Build pdf data and script 
+        run: |
+          file.rename("index.pdf", "raster_p1.pdf")  
+          zip("data_and_script.zip", c("data", "script.R"))
           pagedown::chrome_print("index.html")
-          file.rename("index.pdf", "raster_p1.pdf"  
         shell: Rscript {0}
         
       - name: Deploy workshop 
