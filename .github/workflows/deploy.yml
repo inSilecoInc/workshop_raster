@@ -35,10 +35,13 @@ jobs:
           Rscript -e "install.packages('remotes', repos = 'https://muug.ca/mirror/cran/')"
           Rscript -e "remotes::install_deps()"
       - name: Build presentation
-        run: |-
-          Rscript -e 'icon::download_fontawesome()'
-          Rscript -e 'rmarkdown::render("index.Rmd", "all")'
-          
+        run: |
+          icon::download_fontawesome()
+          rmarkdown::render("index.Rmd", "all")
+          pagedown::chrome_print("index.html")
+          file.rename("index.pdf", "raster_p1.pdf"  
+        shell: Rscript {0}
+        
       - name: Deploy workshop 
         uses: peaceiris/actions-gh-pages@v3
         with:

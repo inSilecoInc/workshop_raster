@@ -1,11 +1,7 @@
 # :mortar_board: Rasters with R 
 ![deploy workshop](https://github.com/inSilecoInc/workshop_raster/workflows/deploy%20workshop/badge.svg)
 
-In this workshop
- 
- - What are raster files 
- - How to open raster files
- - How to edit raster files
+See https://insilecoinc.github.io/workshop_raster/ 
 
 
 # Installation 
