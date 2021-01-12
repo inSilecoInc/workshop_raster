@@ -14,16 +14,14 @@ jobs:
         uses: actions/checkout@master
       - name: Install apt-get packages
         run: |-
-          echo "Set disable_coredump false" >> /etc/sudo.conf
           sudo apt-get update
           sudo apt-get install -y pandoc libudunits2-0 libudunits2-dev
           sudo apt-get install -y libproj-dev libgeos-dev
-          sudo apt-get install -y libgdal-dev r-cran-ncdf4
+          sudo apt-get install -y libgdal-dev r-cran-ncdf4 r-cran-remotes r-cran-sf
       
-      - name: install packages
+      - name: Install R packages
         run: |
-          'install.packages("remotes")'
-          'install.deps()'
+          'remotes::install.deps()'
         shell: Rscript {0}
       # - name: Install R packages with renv
       #   run: |
