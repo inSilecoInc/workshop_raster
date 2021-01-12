@@ -19,6 +19,7 @@ jobs:
           sudo apt-get install -y pandoc libudunits2-0 libudunits2-dev
           sudo apt-get install -y libproj-dev libgeos-dev
           sudo apt-get install -y libgdal-dev r-cran-ncdf4
+      
       - name: Use cache
         uses: actions/cache@v1
         with:
@@ -26,10 +27,14 @@ jobs:
           key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
           restore-keys: |
             ${{ runner.os }}-renv-
-      - name: Install R packages with renv
-        run: |
-          Rscript -e "install.packages('renv', repos = 'https://muug.ca/mirror/cran/')"
-          Rscript -e "renv::restore()"
+      - name: install package 
+        run: |-
+          Rscript -e 'install.packages("remotes")'
+          Rscript -e 'install.deps()'
+      # - name: Install R packages with renv
+      #   run: |
+      #     Rscript -e "install.packages('renv', repos = 'https://muug.ca/mirror/cran/')"
+      #     Rscript -e "renv::restore()"
       - name: Build presentation
         run: |-
           Rscript -e 'rmarkdown::render("index.Rmd", "all")'

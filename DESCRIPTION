@@ -17,6 +17,6 @@ Imports:
   stars,
   tmap
 Remotes: 
-  mitchelloharawild/icon
+  mitchelloharawild/icon,
   gadenbuie/countdown
 
