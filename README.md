@@ -1,4 +1,5 @@
-# :mortar_board: Raster with R 
+# :mortar_board: Rasters with R 
+![deploy workshop](https://github.com/inSilecoInc/workshop_raster/workflows/deploy%20workshop/badge.svg)
 
 In this workshop
  

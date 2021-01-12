@@ -32,7 +32,7 @@ jobs:
           Rscript -e "renv::restore()"
       - name: Build presentation
         run: |-
-          Rscript -e 'rmarkdown::render(x, "all")'
+          Rscript -e 'rmarkdown::render("index.Rmd", "all")'
       - name: Deploy inSileco Blog to gh-pages
         uses: peaceiris/actions-gh-pages@v2
         env:

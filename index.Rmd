@@ -61,9 +61,10 @@ class: title-slide, middle
   ]
 ]
 
+<br>
+<img src="img/logoW.png" width="140px"></img>
 
-<br><br><br>
-<img src="img/logoW.png" width="150px"></img>
+![deploy workshop](https://github.com/inSilecoInc/workshop_raster/workflows/deploy%20workshop/badge.svg)
 
 .instructors[Content under [`r rfa("creative-commons")` `r rfa("creative-commons-by")`](https://creativecommons.org/licenses/by/4.0/) unless otherwise specified]
 
