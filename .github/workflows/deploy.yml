@@ -1,0 +1,42 @@
+name: deploy workshop
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: rocker/verse:latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Install apt-get packages
+        run: |-
+          echo "Set disable_coredump false" >> /etc/sudo.conf
+          sudo apt-get update
+          sudo apt-get install -y pandoc libudunits2-0 libudunits2-dev
+          sudo apt-get install -y libproj-dev libgeos-dev
+          sudo apt-get install -y libgdal-dev r-cran-ncdf4
+      - name: Use cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.local/share/renv
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+      - name: Install R packages with renv
+        run: |
+          Rscript -e "install.packages('renv', repos = 'https://muug.ca/mirror/cran/')"
+          Rscript -e "renv::restore()"
+      - name: Build presentation
+        run: |-
+          Rscript -e 'rmarkdown::render(x, "all")'
+      - name: Deploy inSileco Blog to gh-pages
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.DEPLOY_TOKEN }}
+          PUBLISH_BRANCH: main
+          PUBLISH_DIR: .
+
