@@ -36,11 +36,9 @@ jobs:
           Rscript -e "remotes::install_deps()"
       - name: Build presentation
         run: |-
+          Rscript -e 'icon::download_fontawesome()'
           Rscript -e 'rmarkdown::render("index.Rmd", "all")'
           
-      - name: Build presentation
-        run: |-
-          Rscript -e 'rmarkdown::render("index.Rmd", "all")'
       - name: Deploy inSileco Blog to gh-pages
         uses: peaceiris/actions-gh-pages@v2
         env:

@@ -28,9 +28,6 @@ knitr::opts_chunk$set(
   fig.align = 'center',
   width = 120
 )
-# library(icon)
-# library(icon)
-icon::download_fontawesome()
 rfa <- function(...) icon::fontawesome(...)
 library(raster)
 rar <- raster("data/bathy.tif")  
@@ -57,7 +54,7 @@ class: title-slide, middle
   `r format(Sys.time(), '%B %d, %Y')`
   <br>
   .font200[
-  [`r rfa("github")`](https://github.com/inSilecoInc)
+  [`r rfa("github")`](https://github.com/inSilecoInc/workshop_raster)
   [`r rfa("database")`](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
   [`r rfa("file-pdf")`](https://github.com/inSilecoInc/workshop_raster/raw/main/raster_p1.pdf)
   ]
