@@ -19,17 +19,21 @@ jobs:
           sudo apt-get install -y libproj-dev libgeos-dev
           sudo apt-get install -y libgdal-dev r-cran-ncdf4 r-cran-remotes r-cran-sf
       
-      - name: Use cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.local/share/renv
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
-      - name: Install R packages with renv
+      # - name: Use cache
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: ~/.local/share/renv
+      #     key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-renv-
+      # - name: Install R packages with renv
+      #   run: |
+      #     Rscript -e "install.packages('renv', repos = 'https://muug.ca/mirror/cran/')"
+      #     Rscript -e "renv::restore()"
+      - name: Install R packages 
         run: |
-          Rscript -e "install.packages('renv', repos = 'https://muug.ca/mirror/cran/')"
-          Rscript -e "renv::restore()"
+          Rscript -e "install.packages('remotes', repos = 'https://muug.ca/mirror/cran/')"
+          Rscript -e "remotes::install_deps()"
       - name: Build presentation
         run: |-
           Rscript -e 'rmarkdown::render("index.Rmd", "all")'

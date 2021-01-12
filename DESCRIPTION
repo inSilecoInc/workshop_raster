@@ -6,7 +6,7 @@ Authors@R: c(
   person("inSileco Inc.", role = c("aut", "cre"), email = "kevin.cazelles@gmail.com")
   )
 Imports:
-  countdown
+  countdown,
   icon,
   mapview,
   xaringan,

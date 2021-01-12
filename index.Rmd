@@ -133,7 +133,7 @@ If after the workshop what follows makes sense and you feel it is kind of true, 
 
 --
 
-> Every cell has a value (or a missing values).
+> Every cell has one or several values (or missing values).
 
 --
 
@@ -390,6 +390,9 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 ### - So far, less material available online.
 
+-- 
+
+### We'll talk about both
 
 ---
 # Read a raster file 
@@ -419,7 +422,7 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 ![Accessed 16/12/2020](img/gebco.png)
 
 - https://download.gebco.net/ 
-- `r icon::fontawesome("link")` [ata_and_script.zip](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
+- `r icon::fontawesome("link")` [data_and_script.zip](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
 
 
 
