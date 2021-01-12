@@ -1737,8 +1737,14 @@ map5
 
 - `r rfa("info-circle")` https://www.rdocumentation.org/packages/tmap/versions/3.2/topics/tm_layout
 
+
 ---
 # `r rfa("star")` `r rfa("star")` Reproduce this map
+
+
+```{r, echo = FALSE}
+countdown::countdown(minutes = 15, seconds = 0, left = 0, warn_when = 20)
+```
 
 ```{R tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5}
 # manipulation 
@@ -1763,7 +1769,7 @@ elv + shp + oth
 ---
 # Solution 
 
-```{R, include = TRUE, eval = FALSE}
+```{R, include = FALSE, eval = FALSE}
 # manipulation 
 ras_v <- ras[stl]
 names(ras_v) <- "Elevation"
@@ -1781,7 +1787,7 @@ elv <- tm_shape(ras_v) +
 ---
 # Solution 
 
-```{R, include = TRUE, eval = FALSE}
+```{R, include = FALSE, eval = FALSE}
 # borders 
 shp <- tm_shape(stl) + tm_borders(col = "black", lwd = 2)
 
