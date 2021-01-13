@@ -39,11 +39,11 @@ jobs:
           icon::download_fontawesome()
           rmarkdown::render("index.Rmd", "all")
         shell: Rscript {0}
-      - name: Build pdf data and script 
+      - name: Build pdf, data and script 
         run: |
+          knitr::purl("index.Rmd", "script.R")
           file.rename("index.pdf", "raster_p1.pdf")  
           zip("data_and_script.zip", c("data", "script.R"))
-          pagedown::chrome_print("index.html")
         shell: Rscript {0}
         
       - name: Deploy workshop 
