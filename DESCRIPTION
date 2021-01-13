@@ -9,13 +9,15 @@ Imports:
   countdown,
   icon,
   mapview,
-  xaringan,
+  mapedit,
+  pagedown,
   raster,
   rgdal,
   rmarkdown,
   sf,
   stars,
-  tmap
+  tmap,
+  xaringan
 Remotes: 
   mitchelloharawild/icon,
   gadenbuie/countdown

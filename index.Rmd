@@ -181,7 +181,7 @@ If after the workshop what follows makes sense and you feel it is kind of true, 
 
 --
 
-### 2. Allow to make an analysis/a report reproducible 
+### 2. Allow to make analyses/reports reproducible 
 
 --
 
@@ -391,7 +391,7 @@ Note that `stars` and `sf` are [Tidyverse](https://www.tidyverse.org/) friendly.
 
 -- 
 
-### We'll talk about both
+### We'll talk about both!
 
 ---
 # Read a raster file 
@@ -716,7 +716,7 @@ class: inverse, center, middle
 
 --
 
-- change projection 
+- change projection
 - basic calculations (e.g. average per regions, min/max)
 - crop/mask 
 - extraction
@@ -862,7 +862,7 @@ quantile(ras[[1]])
   
 ```{R bc_rar1_3}
 ras2 <- ras # create a copy
-ras2[[1]][ras[[1]] < units::as_units(0, "m")] <- NA # filter
+ras2[[1]][ras[[1]] > units::as_units(0, "m")] <- NA # filter
 plot(ras2)
 ```
 
@@ -874,11 +874,11 @@ plot(ras2)
 countdown::countdown(minutes = 15, seconds = 0)
 ```
 
-### `r rfa("star")` Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter)
+### `r rfa("star")` Compute the mean elevation (values > 0) and depth (values < 0) for `bathy.tif`.
 
 --
 
-### `r rfa("star")` `r rfa("star")` Create a function `mean_long_lat()` that computes mean elevation/depth along longitude and latitude (`r rfa("star")` `r rfa("star")` `r rfa("star")` include an argument to set an elevation/depth filter).
+### `r rfa("star")` `r rfa("star")` Create a function `mean_long_lat()` that computes mean elevation/depth along longitude (x axis) and latitude (y axis) (`r rfa("star")` `r rfa("star")` `r rfa("star")` include an argument to set an elevation/depth filter).
 
 <br>
 
@@ -889,22 +889,28 @@ countdown::countdown(minutes = 15, seconds = 0)
 ### Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter)
 
 ```{R sol2aa, include = TRUE}
-flt <- 0
 # raster 
-rr <- rar 
-rr[rr < flt] <- NA
-mean(values(rr), na.rm = TRUE)
+rr_d <- rr_e <- rar 
+rr_d[rar > 0] <- NA
+rr_e[rar < 0] <- NA
+mean(values(rr_d), na.rm = TRUE)
+mean(values(rr_e), na.rm = TRUE)
 ```
 
---
+---
+# Solution `r rfa("star")` 
+
+### Compute the mean elevation/depth along the latitude or/and longitude (optional: use elevation/depth filter)
 
 ```{R sol2ab, include = TRUE}
-flt <- 0
-# raster 
-rs <- ras
-rs[[1]][rs[[1]] < units::as_units(flt, "m")] <- NA # filter
-mean(rs[[1]], na.rm = TRUE)
+# stars
+rs_e <- rs_d <- ras
+rs_d[[1]][ras[[1]] > units::as_units(0, "m")] <- NA # filter
+rs_e[[1]][ras[[1]] < units::as_units(0, "m")] <- NA 
+mean(rs_d[[1]], na.rm = TRUE)
+mean(rs_e[[1]], na.rm = TRUE)
 ```
+
 
 ---
 # Solution `r rfa("star")` `r rfa("star")`  / `r rfa("star")` `r rfa("star")` `r rfa("star")` 
@@ -919,8 +925,8 @@ mean_long_lat_r <- function(x, gt_na = NULL, lt_na = NULL) {
   if (!is.null(lt_na)) m[m < lt_na] <- NA
   if (!is.null(gt_na)) m[m > gt_na] <- NA 
   list(
-    m_lon = apply(m, 1, mean, na.rm = TRUE),
-    m_lat = apply(m, 2, mean, na.rm = TRUE)
+    m_lat = apply(m, 1, mean, na.rm = TRUE),
+    m_lon = apply(m, 2, mean, na.rm = TRUE)
   )
 } 
 ```
@@ -932,8 +938,8 @@ mean_long_lat_r <- function(x, gt_na = NULL, lt_na = NULL) {
 ```{R sol2ba2, cache = TRUE, fig.width = 7, include = TRUE}
 res1 <- mean_long_lat_r(rar)
 par(mfrow = c(1, 2))
-plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
-plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")    
+plot(res1$m_lat, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
+plot(res1$m_lon, main = "Along longitude", ylab = "elevation", xlab = "lon_index")    
 ```
 
 ---
@@ -943,8 +949,8 @@ plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index
 ```{R sol2ba3, cache = TRUE, fig.width = 7, include = TRUE}
 res2 <- mean_long_lat_r(rar, gt_na = 0)
 par(mfrow = c(1, 2))
-plot(res2$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
-plot(res2$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")
+plot(res2$m_lat, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
+plot(res2$m_lon, main = "Along longitude", ylab = "elevation", xlab = "lon_index")
 ```
 
 ---
@@ -982,8 +988,8 @@ plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index
 ```{R sol2bb3, cache = TRUE, fig.width = 7, include = TRUE}
 res2 <- mean_long_lat_s(ras, gt_na = 0)
 par(mfrow = c(1, 2))
-plot(res1$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
-plot(res1$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")    
+plot(res2$m_lon, main = "Along latitude", ylab = "elevation", xlab = "lat_index")
+plot(res2$m_lat, main = "Along longitude", ylab = "elevation", xlab = "lon_index")    
 ```
 
 
@@ -1230,7 +1236,9 @@ mean(ras_gulf[[1]], na.rm = TRUE)
 ---
 # Warping/Resampling
 
-### Work with rasters of different resolution 
+<br>
+
+## Work with rasters of different resolutions
 
 ---
 # Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
@@ -1257,12 +1265,12 @@ plot(rar_w1)
 ```{R rar_warp3, cache = TRUE}
 rar_template2 <- raster(xmn = -71, xmx = -55, ymn = 43, ymx = 55, 
   crs = projection(rar), resolution = .25) # create template
-plot(resample(rar, rar_template1))
+plot(resample(rar, rar_template2))
 ```
 
 
 ---
-# Warping/Resampling with [`raster`](https://CRAN.R-project.org/package=raster)
+# Warping/Resampling with [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```{R ras_warp, cache = TRUE}
 ras_template1 <- st_as_stars(st_bbox(ras), nx = 21, ny = 21, 
@@ -1278,7 +1286,7 @@ plot(ras_w1)
 
 ```{R ras_warp2, cache = TRUE}
 ras_w2 <- st_warp(ras, cellsize = 0.25, crs = st_crs(ras)) 
-plot(st_warp(ras, ras_w2))
+plot(ras_w2)
 ```
 
 
@@ -1611,6 +1619,39 @@ plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
 ```
 
 
+
+---
+# [`mapedit`](https://CRAN.R-project.org/package=mapedit)
+
+![](img/mapedit.png)
+
+`r icon::fontawesome("info-circle")` https://github.com/r-spatial/mapedit
+
+---
+# [`mapedit`](https://CRAN.R-project.org/package=mapedit) *live*
+
+```{R, eval = FALSE}
+install.packages("mapedit")
+library(mapedit)
+anticosti <- mapedit()
+```
+
+---
+# [`mapedit`](https://CRAN.R-project.org/package=mapedit)  
+
+```{R, eval = FALSE}
+stl <- sf::st_read("data/st_laurence.geojson")
+png("output/anticosti.png", width = 7, height = 5, units = "in", res = 300)
+plot(st_geometry(stl))
+plot(st_geometry(anticosti), col = 2, add = TRUE)  
+dev.off()
+```
+
+.center[![:scale 70%](img/anticosti.png)]
+
+
+
+
 ---
 # [`tmap`](https://CRAN.R-project.org/package=tmap)
 
@@ -1696,10 +1737,16 @@ map5
 
 - `r rfa("info-circle")` https://www.rdocumentation.org/packages/tmap/versions/3.2/topics/tm_layout
 
+
+
 ---
 # `r rfa("star")` `r rfa("star")` Reproduce this map
 
-```{R tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5}
+```{r, echo = FALSE}
+countdown::countdown(minutes = 15, seconds = 0, left = 0, warn_when = 20)
+```
+
+```{R tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5, purl = FALSE}
 # manipulation 
 ras_v <- ras[stl]
 names(ras_v) <- "Elevation"
@@ -1722,7 +1769,7 @@ elv + shp + oth
 ---
 # Solution 
 
-```{R, include = TRUE, eval = FALSE}
+```{R, include = FALSE, eval = FALSE, purl = FALSE}
 # manipulation 
 ras_v <- ras[stl]
 names(ras_v) <- "Elevation"
@@ -1740,7 +1787,7 @@ elv <- tm_shape(ras_v) +
 ---
 # Solution 
 
-```{R, include = TRUE, eval = FALSE}
+```{R, include = FALSE, eval = FALSE, purl = FALSE}
 # borders 
 shp <- tm_shape(stl) + tm_borders(col = "black", lwd = 2)
 
