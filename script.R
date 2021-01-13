@@ -347,7 +347,7 @@ plot(rar_mi)
 
 ## ----ras_m, cache = TRUE------------------------------------------------------
 ras_m <- ras[stl]
-plot(ras_m)
+plot(rar_m)
 
 
 ## ----ras_m1, cache = TRUE-----------------------------------------------------
@@ -367,7 +367,7 @@ countdown::countdown(minutes = 10, seconds = 0)
 ## ----sol3aa, cache = TRUE, include = TRUE-------------------------------------
 # raster 
 rar_m <- mask(rar, stl)
-mean(ras_m[[1]], na.rm = TRUE)
+mean(rar_m[[1]], na.rm = TRUE)
 
 
 ## ----sol3ab, cache = TRUE, include = TRUE-------------------------------------
