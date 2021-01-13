@@ -56,10 +56,6 @@ sort(st_dr$name[st_dr$write])
 write_stars(ras, dsn = "output/ras.gpkg", driver = "GPKG")
 
 
-## ---- echo = FALSE------------------------------------------------------------
-countdown::countdown(minutes = 10, seconds = 0)
-
-
 ## ----sol1aa, cache = TRUE, include = TRUE-------------------------------------
 # raster 
 rr <- raster("data/bathy.tif")
@@ -195,10 +191,6 @@ quantile(ras[[1]])
 ras2 <- ras # create a copy
 ras2[[1]][ras[[1]] > units::as_units(0, "m")] <- NA # filter
 plot(ras2)
-
-
-## ---- echo = FALSE------------------------------------------------------------
-countdown::countdown(minutes = 15, seconds = 0)
 
 
 ## ----sol2aa, include = TRUE---------------------------------------------------
