@@ -329,10 +329,6 @@ ras_mi <- ras[stl_i]
 plot(ras_mi)
 
 
-## ---- echo = FALSE------------------------------------------------------------
-countdown::countdown(minutes = 10, seconds = 0)
-
-
 ## ----sol3aa, cache = TRUE, include = TRUE-------------------------------------
 # raster 
 rar_m <- mask(rar, stl)
@@ -596,4 +592,51 @@ map4
 map5 <- tm_shape(ras) + tm_raster("bathy.tif", breaks = c(seq(-5000,
     0, 1000), 250, 500, 750, 1000), palette = "viridis") 
 map5 
+
+
+## ----tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5, purl = TRUE----
+# manipulation 
+ras_v <- ras[stl]
+names(ras_v) <- "Elevation"
+# colors 
+pal <- colorRampPalette(c("#c7cbce", "#687677", "#222d3d", "#25364a", "#172434", "#ad6a11", "#e6a331", "#e4be29", "#f2ea8b"))
+# raster 
+elv <- tm_shape(ras_v) + 
+  tm_raster("Elevation", breaks = seq(-800, 200, 100), palette = pal(11), midpoint = NA) + 
+  tm_layout(main.title = "St-Lawrence river & Gulf", main.title.color = "#ad6a11") + 
+  tm_xlab("longitude", size = 0.5) + tm_ylab("latitude", size = 0.5) +
+  tm_graticules(lwd = .5, col = "#aaaaaa")
+  
+shp <- tm_shape(stl) + tm_borders(col = "black", lwd = 2)
+oth <- tm_compass(type = "8star", position = c("left", "bottom")) +     
+  tm_scale_bar(breaks = c(0, 100, 200), text.size = .8) + 
+  tm_logo(c("https://www.r-project.org/logo/Rlogo.png"), position = c("right", "top"), height = 3) 
+elv + shp + oth
+
+
+## ----sol4a, include = TRUE, eval = FALSE, purl = TRUE-------------------------
+## # manipulation
+## ras_v <- ras[stl]
+## names(ras_v) <- "Elevation"
+## # colors
+## pal <- colorRampPalette(c("#c7cbce", "#687677", "#222d3d", "#25364a",
+##   "#172434", "#ad6a11", "#e6a331", "#e4be29", "#f2ea8b"))
+## # raster
+## elv <- tm_shape(ras_v) +
+##   tm_raster("Elevation", breaks = seq(-800, 200, 100), palette = pal(11), midpoint = NA) +
+##   tm_layout(main.title = "St-Lawrence (River & Gulf)", main.title.color = "#ad6a11") +
+##   tm_xlab("longitude", size = 0.5) + tm_ylab("latitude", size = 0.5) +
+##   tm_graticules(lwd = .5, col = "#aaaaaa")
+
+
+## ----sol4b, include = TRUE, eval = FALSE, purl = TRUE-------------------------
+## # borders
+## shp <- tm_shape(stl) + tm_borders(col = "black", lwd = 2)
+## 
+## # other elements
+## oth <- tm_compass(type = "8star", position = c("left", "bottom")) +
+##     tm_scale_bar(breaks = c(0, 100, 200), text.size = .8) +
+##     tm_logo("https://www.r-project.org/logo/Rlogo.png", position = c("right", "top"), height = 3)
+## 
+## elv + shp + oth
 

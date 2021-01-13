@@ -1144,9 +1144,8 @@ plot(ras_mi)
 - `r icon::fontawesome("star")` `r icon::fontawesome("star")` Compare the depth of the Gulf of the St-Lawrence and the depth of the St-Lawrence river (various solutions!)
 
 
-```{r, echo = FALSE}
-countdown::countdown(minutes = 10, seconds = 0)
-```
+`r countdown(minutes = 10, warn_when = 30)`
+
 
 ---
 # Solution `r rfa("star")`
@@ -1793,7 +1792,7 @@ map5
 `r countdown(minutes = 15, left = 0, warn_when = 30)`
 
 
-```{R tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5, purl = FALSE}
+```{R tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5, purl = TRUE}
 # manipulation 
 ras_v <- ras[stl]
 names(ras_v) <- "Elevation"
@@ -1816,7 +1815,7 @@ elv + shp + oth
 ---
 # Solution 
 
-```{R sol4a, include = TRUE, eval = FALSE, purl = FALSE}
+```{R sol4a, include = TRUE, eval = FALSE, purl = TRUE}
 # manipulation 
 ras_v <- ras[stl]
 names(ras_v) <- "Elevation"
@@ -1834,7 +1833,7 @@ elv <- tm_shape(ras_v) +
 ---
 # Solution 
 
-```{R sol4b, include = TRUE, eval = FALSE, purl = FALSE}
+```{R sol4b, include = TRUE, eval = FALSE, purl = TRUE}
 # borders 
 shp <- tm_shape(stl) + tm_borders(col = "black", lwd = 2)
 
