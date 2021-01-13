@@ -27,6 +27,7 @@ knitr::opts_chunk$set(
   fig.align = 'center',
   width = 120
 )
+library(countdown)
 rfa <- function(...) icon::fontawesome(...)
 library(raster)
 rar <- raster("data/bathy.tif")  
@@ -596,9 +597,7 @@ write_stars(ras, dsn = "output/ras.gpkg", driver = "GPKG")
 ---
 # `r rfa("terminal")` R as a raster file converter 
 
-```{r, echo = FALSE}
-countdown::countdown(minutes = 10, seconds = 0)
-```
+`r countdown(minutes = 10)`
 <br>
 
 --
@@ -868,9 +867,8 @@ plot(ras2)
 ---
 # `r rfa("terminal")` Mean along latitude and longitude 
 
-```{r, echo = FALSE}
-countdown::countdown(minutes = 15, seconds = 0)
-```
+`r countdown(minutes = 15, seconds = 0)`
+
 
 ### `r rfa("star")` Compute the mean elevation (values > 0) and depth (values < 0) for `bathy.tif`.
 
@@ -1621,7 +1619,7 @@ plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
 # Masking faster 
 
 ### - Crop first 
-### - Use `simplify` or `st_simplify`
+### - Use `simplify()` or `st_simplify()`
 
 --
 
@@ -1700,7 +1698,6 @@ dev.off()
 
 
 
-
 ---
 # [`tmap`](https://CRAN.R-project.org/package=tmap)
 
@@ -1734,11 +1731,13 @@ map1
 
 --
 
-# Let's focus on [`stars`](https://CRAN.R-project.org/package=stars)
+### Let's focus on [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```R
-# create a stars object from a raster object
+# create a stars object from a raster one
 st_as_stars(rar)
+# create a raster object from a stars one
+as(ras, "Raster") 
 ```
 
 ---
@@ -1791,9 +1790,8 @@ map5
 ---
 # `r rfa("star")` `r rfa("star")` Reproduce this map
 
-```{r, echo = FALSE, purl = FALSE}
-countdown::countdown(minutes = 12, seconds = 0, left = 0, warn_when = 30)
-```
+`r countdown(minutes = 15, left = 0, warn_when = 30)`
+
 
 ```{R tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5, purl = FALSE}
 # manipulation 
