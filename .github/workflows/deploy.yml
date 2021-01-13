@@ -53,3 +53,10 @@ jobs:
           publish_dir: .
           keep_files: true
           
+      - name: Deploy workshop 
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.DEPLOY_TOKEN }}
+          publish_dir: .
+          exclude_assets: '.github,.gitignore,DESCRIPTION,makefile'
+          

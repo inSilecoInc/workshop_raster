@@ -14,7 +14,6 @@ output:
 ---
 
 
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   comment = "#>",
@@ -41,7 +40,6 @@ stl <- sf::st_read("data/st_laurence.geojson")
 
 class: title-slide, middle
 
-
 ## .font200[`r icon::fontawesome("r-project")`asters]
 
 <br>
@@ -55,7 +53,7 @@ class: title-slide, middle
   <br>
   .font200[
   [`r rfa("github")`](https://github.com/inSilecoInc/workshop_raster)
-  [`r rfa("database")`](https://github.com/inSilecoInc/workshop_raster/raw/main/data_and_script.zip)
+  [`r rfa("database")`](https://github.com/inSilecoInc/workshop_raster/raw/gh-pages/data_and_script.zip)
   [`r rfa("file-pdf")`](https://github.com/inSilecoInc/workshop_raster/raw/main/raster_p1.pdf)
   ]
 ]
@@ -1118,7 +1116,7 @@ plot(rar_mi)
 
 ```{R ras_m, cache = TRUE} 
 ras_m <- ras[stl]
-plot(ras_m)
+plot(rar_m)
 ```
 
 ---
@@ -1158,7 +1156,7 @@ countdown::countdown(minutes = 10, seconds = 0)
 ```{R sol3aa, cache = TRUE, include = TRUE}
 # raster 
 rar_m <- mask(rar, stl)
-mean(ras_m[[1]], na.rm = TRUE)
+mean(rar_m[[1]], na.rm = TRUE)
 ```
 
 ```{R sol3ab, cache = TRUE, include = TRUE}
