@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2021-01-13 05:03:39
+[georeference]
+nrows=2880
+ncols=3840
+xmin=-71
+ymin=43
+xmax=-55
+ymax=55
+projection=+proj=longlat +datum=WGS84 +no_defs
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=1
+bandorder=BIL
+categorical=FALSE
+minvalue=-4490
+maxvalue=1502
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=bathy
