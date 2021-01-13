@@ -14,7 +14,7 @@ output:
 ---
 
 
-```{r setup, include = FALSE}
+```{r setup, include = FALSE, purl = FALSE}
 knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
@@ -1617,6 +1617,57 @@ plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
 ```
 
 
+---
+# Masking faster 
+
+### - Crop first 
+### - Use `simplify` or `st_simplify`
+
+--
+
+### - Rasterize instead 
+
+
+---
+# Masking faster 
+
+### Solution proposed by Dewey Dunnington
+ 
+```{R, soldd1} 
+# load files
+gulf_region <- sf::read_sf("data/st_laurence.geojson")
+strs <- stars::read_stars("data/bathy.tif")
+# create raster mask
+template <- strs
+template[[1]][] <- 0
+gulf_region$val_ras <- 1
+
+rasterized <- stars::st_rasterize(gulf_region["val_ras"], template = template)
+range(rasterized[[1]])
+```
+
+---
+# Masking faster 
+
+### Solution proposed by Dewey Dunnington
+ 
+```{R, soldd2} 
+plot(rasterized)
+```
+
+---
+# Masking faster 
+
+### Solution proposed by Dewey Dunnington
+
+```{R, soldd3} 
+# apply raster mask
+strs[rasterized == 0] <- NA
+plot(strs)
+```
+
+
+
 
 ---
 # [`mapedit`](https://CRAN.R-project.org/package=mapedit)
@@ -1631,7 +1682,7 @@ plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
 ```{R, eval = FALSE}
 install.packages("mapedit")
 library(mapedit)
-anticosti <- mapedit()
+anticosti <- editMap()
 ```
 
 ---
@@ -1683,7 +1734,7 @@ map1
 
 --
 
-- let's focus on `stars`
+# Let's focus on [`stars`](https://CRAN.R-project.org/package=stars)
 
 ```R
 # create a stars object from a raster object
@@ -1740,8 +1791,8 @@ map5
 ---
 # `r rfa("star")` `r rfa("star")` Reproduce this map
 
-```{r, echo = FALSE}
-countdown::countdown(minutes = 15, seconds = 0, left = 0, warn_when = 20)
+```{r, echo = FALSE, purl = FALSE}
+countdown::countdown(minutes = 12, seconds = 0, left = 0, warn_when = 30)
 ```
 
 ```{R tmap_exo, echo = FALSE, cache = TRUE, fig.width = 6, fig.height = 5, purl = FALSE}

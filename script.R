@@ -1,26 +1,3 @@
-## ----setup, include = FALSE---------------------------------------------------
-knitr::opts_chunk$set(
-  comment = "#>",
-  collapse = TRUE,
-  warning = FALSE,
-  message = FALSE,
-  dev = "png",
-  dpi = 108,
-  fig.width = 5,
-  fig.height = 4,
-  fig.align = 'center',
-  width = 120
-)
-rfa <- function(...) icon::fontawesome(...)
-library(raster)
-rar <- raster("data/bathy.tif")  
-class(rar)
-library(stars)
-ras <- read_stars("data/bathy.tif")  
-class(ras)
-stl <- sf::st_read("data/st_laurence.geojson")  
-
-
 ## ----read_raster--------------------------------------------------------------
 library(raster)
 rar <- raster("data/bathy.tif")  
@@ -560,10 +537,33 @@ par(las = 1, bg = "#f79c74", cex.axis = .7, mar = c(2, 2, 2, 4), oma = c(0, 2, 0
 plot(ras,  breaks = bks, col = cls, main = "St-Lawrence map", axes = TRUE)
 
 
+## ---- soldd1------------------------------------------------------------------
+# load files
+gulf_region <- sf::read_sf("data/st_laurence.geojson")
+strs <- stars::read_stars("data/bathy.tif")
+# create raster mask
+template <- strs
+template[[1]][] <- 0
+gulf_region$val_ras <- 1
+
+rasterized <- stars::st_rasterize(gulf_region["val_ras"], template = template)
+range(rasterized[[1]])
+
+
+## ---- soldd2------------------------------------------------------------------
+plot(rasterized)
+
+
+## ---- soldd3------------------------------------------------------------------
+# apply raster mask
+strs[rasterized == 0] <- NA
+plot(strs)
+
+
 ## ---- eval = FALSE------------------------------------------------------------
 ## install.packages("mapedit")
 ## library(mapedit)
-## anticosti <- mapedit()
+## anticosti <- editMap()
 
 
 ## ---- eval = FALSE------------------------------------------------------------
@@ -604,8 +604,4 @@ map4
 map5 <- tm_shape(ras) + tm_raster("bathy.tif", breaks = c(seq(-5000,
     0, 1000), 250, 500, 750, 1000), palette = "viridis") 
 map5 
-
-
-## ---- echo = FALSE------------------------------------------------------------
-countdown::countdown(minutes = 15, seconds = 0, left = 0, warn_when = 20)
 
